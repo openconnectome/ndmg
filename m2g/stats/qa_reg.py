@@ -187,12 +187,13 @@ def plot_overlays(atlas, b0, cmaps=None, minthr=2, maxthr=95, edge=False):
         cmap2 = LinearSegmentedColormap.from_list("mycmap2", ["white", "green"])
         cmaps = [cmap1, cmap2]
 
-    if b0.shape == (182, 218, 182):
+    brain_volume = b0.shape
+
+    if brain_volume == (182, 218, 182):
         x = [78, 90, 100]
         y = [82, 107, 142]
         z = [88, 103, 107]
     else:
-        brain_volume = b0.shape
         x = [int(brain_volume[0] * 0.35), int(brain_volume[0] * 0.51), int(brain_volume[0] * 0.65)]
         y = [int(brain_volume[1] * 0.35), int(brain_volume[1] * 0.51), int(brain_volume[1] * 0.65)]
         z = [int(brain_volume[2] * 0.35), int(brain_volume[2] * 0.51), int(brain_volume[2] * 0.65)]

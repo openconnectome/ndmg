@@ -166,11 +166,10 @@ class RunTrack:
         self.gtab = gtab
         self.mod_type = mod_type
         self.track_type = track_type
-        self.qa_tensor_out = qa_tensor_out 
+        self.qa_tensor_out = qa_tensor_out
         self.seeds = seeds
         self.mod_func = mod_func
         self.stream_affine = stream_affine
-
 
     @timer
     def run(self):
@@ -335,7 +334,9 @@ class RunTrack:
                 parallel=False,
             )
             print("CSD Reponse: " + str(self.response))
-            self.mod = ConstrainedSphericalDeconvModel(self.gtab, self.response,sh_order=6)
+            self.mod = ConstrainedSphericalDeconvModel(
+                self.gtab, self.response, sh_order=6
+            )
         return self.mod
 
     @timer
@@ -354,7 +355,12 @@ class RunTrack:
                 npeaks=5,
                 normalize_peaks=True,
             )
-            qa_tensor.create_qa_figure(self.mod_peaks.peak_dirs, self.mod_peaks.peak_values, self.qa_tensor_out, self.mod_func)
+            qa_tensor.create_qa_figure(
+                self.mod_peaks.peak_dirs,
+                self.mod_peaks.peak_values,
+                self.qa_tensor_out,
+                self.mod_func,
+            )
             self.streamline_generator = LocalTracking(
                 self.mod_peaks,
                 self.tiss_classifier,
@@ -378,7 +384,12 @@ class RunTrack:
                 npeaks=5,
                 normalize_peaks=True,
             )
-            qa_tensor.create_qa_figure(self.mod_peaks.peak_dirs, self.mod_peaks.peak_values, self.qa_tensor_out, self.mod_func)
+            qa_tensor.create_qa_figure(
+                self.mod_peaks.peak_dirs,
+                self.mod_peaks.peak_values,
+                self.qa_tensor_out,
+                self.mod_func,
+            )
             try:
                 print(
                     "Proceeding using spherical harmonic coefficient from model estimation..."
@@ -422,7 +433,12 @@ class RunTrack:
                 npeaks=5,
                 normalize_peaks=True,
             )
-            qa_tensor.create_qa_figure(self.mod_peaks.peak_dirs, self.mod_peaks.peak_values, self.qa_tensor_out, self.mod_func)
+            qa_tensor.create_qa_figure(
+                self.mod_peaks.peak_dirs,
+                self.mod_peaks.peak_values,
+                self.qa_tensor_out,
+                self.mod_func,
+            )
             self.streamline_generator = ParticleFilteringTracking(
                 self.mod_peaks,
                 self.tiss_classifier,
@@ -452,7 +468,12 @@ class RunTrack:
                 npeaks=5,
                 normalize_peaks=True,
             )
-            qa_tensor.create_qa_figure(self.mod_peaks.peak_dirs, self.mod_peaks.peak_values, self.qa_tensor_out, self.mod_func)
+            qa_tensor.create_qa_figure(
+                self.mod_peaks.peak_dirs,
+                self.mod_peaks.peak_values,
+                self.qa_tensor_out,
+                self.mod_func,
+            )
             try:
                 print(
                     "Proceeding using spherical harmonic coefficient from model estimation..."

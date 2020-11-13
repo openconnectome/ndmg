@@ -248,10 +248,10 @@ def skullstrip_check(dmrireg, parcellations, outdir, prep_anat, vox_size, reg_st
         n_ids_2 = align_lab[align_lab > 0]
         num2 = len(np.unique(n_ids_2))
 
-        #if num != num2:
-        #    raise KeyError(
-        #        "The atlas has lost an roi due to alignment! Try rerunning m2g with the appropriate --skull flag."
-        #    )
+        if num != num2:
+            print('''WARNING: The atlas has lost an roi due to alignment! A file containing the lost ROI values will be generated in the
+            same folder as the connectome output. Try rerunning m2g with the appropriate --skull flag.'''
+            )
 
         labels_im_file_list.append(labels_im_file_dwi)
     return labels_im_file_list

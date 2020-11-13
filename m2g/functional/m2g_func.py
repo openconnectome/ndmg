@@ -1,6 +1,7 @@
 import subprocess
 import yaml
 from m2g.utils.gen_utils import run
+import sys
 
 def make_dataconfig(input_dir, sub, ses, anat, func, acquisition='alt+z', tr=2.0):
     """Generates the data_config file needed by cpac
@@ -44,8 +45,7 @@ def make_script(input_dir, output_dir, subject, session, data_config, pipeline_c
     cpac_script = '/root/.m2g/cpac_script.sh'
     with open(cpac_script,'w+',encoding='utf8') as script:
         script.write(f'''#! /bin/bash
-        . /venv/bin/activate
-        python /code/run.py --data_config_file {data_config} --pipeline_file {pipeline_config} --n_cpus {n_cpus} --mem_gb {mem_gb} {input_dir} {output_dir} participant
+        python3.6 /code/run.py --data_config_file {data_config} --pipeline_file {pipeline_config} --n_cpus {n_cpus} --mem_gb {mem_gb} {input_dir} {output_dir} participant
         ''')
     
     run(f'chmod +x {cpac_script}')

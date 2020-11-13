@@ -31,7 +31,7 @@ def eddy_correct(dwi, corrected_dwi, idx):
         Index of the first B0 volume in the stack
     """
 
-    cmd = f"eddy_correct {dwi} {corrected_dwi} {str(idx)}"
+    cmd = f". /venv/bin/activate && eddy_correct {dwi} {corrected_dwi} {str(idx)} && deactivate"
     gen_utils.run(cmd)
 
 

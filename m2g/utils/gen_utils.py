@@ -92,7 +92,7 @@ class DirectorySweeper:
         
         kwargs = dict(
             suffix=pipeline,
-            extensions=["nii", "nii.gz"],
+            extension=["nii", "nii.gz"],
             subject=subjects,
             session=sessions,
         )
@@ -380,8 +380,8 @@ def is_bids(input_dir):
         l = bids.BIDSLayout(input_dir)
         return l.validate
     except ValueError as e:
-        p = "'dataset_description.json' is missing from project root. Every valid BIDS dataset must have this file."
-        if str(e) != p:
+        p = "dataset_description.json"
+        if p not in str(e):
             raise ValueError(e)
         create_datadescript(input_dir)
         return is_bids(input_dir)
@@ -644,7 +644,7 @@ def make_gtab_and_bmask(fbval: str, fbvec: str, dwi_file: str, preproc_dir: Path
     # Get mean B0 brain mask
     cmd = f"bet {nodif_B0} {nodif_B0_bet} -m -f 0.2"
     run(cmd)
-    return gtab, nodif_B0, nodif_B0_mask
+    return gtab, nodif_B0_bet, nodif_B0_mask
 
 
 def normalize_xform(img):

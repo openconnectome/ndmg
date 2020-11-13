@@ -1,5 +1,5 @@
 # CPAC Pipeline Configuration YAML file
-# Version 1.6.1
+# Version 1.6.2
 #
 # http://fcp-indi.github.io for more info.
 #
@@ -52,11 +52,11 @@ pipelineName :  m2g
 
 
 # Directory where CPAC should store temporary and intermediate files.
-workingDirectory :  /output #/tmp
+workingDirectory :  /tmp
 
 
 # Directory where CPAC should write crash logs.
-crashLogDirectory :  /output #/tmp
+crashLogDirectory :  /tmp
 
 
 # Directory where CPAC should place processed data.
@@ -68,7 +68,7 @@ run_logging :  True
 
 
 # Directory where CPAC should place run logs.
-logDirectory :  /output #/tmp
+logDirectory :  /tmp
 
 
 # If setting the 'Output Directory' to an S3 bucket, insert the path to your AWS credentials file here.
@@ -80,16 +80,16 @@ s3Encryption :  [0]
 
 
 # Include extra versions and intermediate steps of functional preprocessing in the output directory.
-write_func_outputs :  [1] #0
+write_func_outputs :  [0]
 
 
 # Include extra outputs in the output directory that may be of interest when more information is needed.
-write_debugging_outputs :  [1] #0
+write_debugging_outputs :  [0]
 
 
 # Output directory format and structure.
 # Options: default, ndmg
-output_tree: "default" #try default?
+output_tree: "ndmg"
 
 
 # Generate quality control pages containing preprocessing and derivative outputs.
@@ -98,7 +98,7 @@ generateQualityControlImages :  [1]
 
 # Deletes the contents of the Working Directory after running.
 # This saves disk space, but any additional preprocessing or analysis will have to be completely re-run.
-removeWorkingDir :  False
+removeWorkingDir :  True
 
 
 # Uses the contents of the Working Directory to regenerate all outputs and their symbolic links.
@@ -229,7 +229,7 @@ skullstrip_fac :  1
 skullstrip_blur_fwhm :  0
 
 
-# Set it as True if processing monkey data with AFNI
+# Set it as True if processing monkey data with AFNI 
 skullstrip_monkey : False
 
 
@@ -303,6 +303,13 @@ template_skull_for_anat :  /usr/share/fsl/5.0/data/standard/MNI152_T1_${resoluti
 # Use either ANTS or FSL (FLIRT and FNIRT) as your anatomical registration method.
 regOption :  ['FSL']
 
+
+# ANTs parameters, if select ANTs as regOption
+ANTs_para_T1_registration: None
+
+
+# Please specify ANTs parameters,if run Functional to EPI Template Registration
+ANTs_para_EPI_registration: None
 
 # If a lesion mask is available for a T1w image, use it to improve the ANTs' registration
 # ANTS registration only.
@@ -424,9 +431,6 @@ brain_mask_erosion_mm : 30
 brain_erosion_mm: 0
 
 
-# Erode binarized csf tissue mask.
-seg_csf_use_erosion: False
-
 
 # Erosion proportion, if use erosion.
 # Default proportion is 0 for CSF (cerebrospinal fluid)  mask.
@@ -495,6 +499,17 @@ scaling_factor : 10
 runMotionStatisticsFirst : [0]
 
 
+# Choose motion correction method. Options: AFNI 3dvolreg, FSL mcflirt
+motion_correction : ['3dvolreg']
+
+
+# Choose motion correction reference. Options: mean, median, selected volume 
+motion_correction_reference: ['mean']
+
+
+# Choose motion correction reference volume
+motion_correction_reference_volume :  0
+
 # Interpolate voxel time courses so they are sampled at the same time points.
 slice_timing_correction :  [1]
 
@@ -550,22 +565,6 @@ fmap_distcorr_frac : [0.5]
 # Set the threshold value for the skull-stripping of the magnitude file. Depending on the data, a tighter extraction may be necessary in order to prevent noisy voxels from interfering with preparing the field map.
 # The default value is 0.5.
 fmap_distcorr_threshold :  0.6
-
-
-# Set the Delta-TE value, used for preparing field map, time delay between the first and second echo images. Default value is 2.46 ms.
-fmap_distcorr_deltaTE : [2.46]
-
-
-# Set the Dwell Time for the fugue input. This is the time between scans, default value is 0.0005s.
-fmap_distcorr_dwell_time : [0.0005]
-
-
-# Set the asymmetric ratio value for FSL Fugue input.
-fmap_distcorr_dwell_asym_ratio : [0.93902439]
-
-
-# Set the phase-encoding direction. The options are: x, y, z, -x, -y, -z.
-fmap_distcorr_pedir :  x
 
 
 # Run Functional to EPI Template Registration
@@ -630,13 +629,10 @@ functionalMasking :  ['AFNI']
 anatomical_mask_dilation : False
 
 
-# Choose motion correction method - AFNI (3dvolreg), FSL (mcflirt)
-motion_correction : ['AFNI']
-
-
-# Register functional images to a standard MNI152 template.
+# Run Functional to Template Registration
 # This option must be enabled if you wish to calculate any derivatives.
-runRegisterFuncToMNI :  [1]
+# Options: ['T1_template', 'EPI_template', 'Off']
+runRegisterFuncToTemplate :  ['T1_template']
 
 
 # The resolution (in mm) to which the preprocessed, registered functional timeseries outputs are written into. Note that selecting a 1 mm or 2 mm resolution might substantially increase your RAM needs- these resolutions should be selected with caution. For most cases, 3 mm or 4 mm resolutions are suggested.
@@ -725,16 +721,31 @@ targetAngleDeg : [90]
 runROITimeseries :  [1]
 
 
+
+# Functional time-series and ROI realignment method: ['ROI_to_func'] or ['func_to_ROI']
+# 'ROI_to_func' will realign the atlas/ROI to functional space (fast)
+# 'func_to_ROI' will realign the functional time series to the atlas/ROI space
+#
+#     NOTE: in rare cases, realigning the ROI to the functional space may
+#           result in small misalignments for very small ROIs - please double
+#           check your data if you see issues
+realignment : ['ROI_to_func']
+
+
 # Enter paths to region-of-interest (ROI) NIFTI files (.nii or .nii.gz) to be used for time-series extraction, and then select which types of analyses to run.
 # Available analyses: ['Avg', 'Voxel', 'SpatialReg'].
 # Denote which analyses to run for each ROI path by listing the names above. For example, if you wish to run Avg and SpatialReg, you would enter: '/path/to/ROI.nii.gz': Avg, SpatialReg
 tsa_roi_paths:
-  - /m2g_atlases/atlases/label/Human/reg_aal_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
-    /m2g_atlases/atlases/label/Human/reg_Schaefer2018-200-node_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
-    /m2g_atlases/atlases/label/Human/reg_Schaefer2018-1000-node_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
-    /m2g_atlases/atlases/label/Human/reg_glasser_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
-    /m2g_atlases/atlases/label/Human/reg_Talairach_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
-    /m2g_atlases/atlases/label/Human/reg_Juelich_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+  - /m2g_atlases/atlases/label/Human/AAL_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/Brodmann_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/CPAC200_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/Desikan_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/DKT_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/HarvardOxfordcort-maxprob-thr25_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/HarvardOxfordsub-maxprob-thr25_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/JHU_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+    /m2g_atlases/atlases/label/Human/Princetonvisual-top_space-MNI152NLin6_res-2x2x2.nii.gz: Avg
+
 
 
 # By default, extracted time series are written as both a text file and a 1D file. Additional output formats are as a .csv spreadsheet or a Numpy array.

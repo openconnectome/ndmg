@@ -14,12 +14,9 @@ In this module, m2g:
 
 # standard library imports
 import sys
-import shutil
 import glob
 import os
 from argparse import ArgumentParser
-import traceback
-import subprocess
 
 # m2g imports
 from m2g.utils import cloud_utils
@@ -92,7 +89,7 @@ def get_atlas(atlas_dir, vox_size):
 def get_atlas_dir():
     """
     Gets the location of m2g's atlases.
-    
+
     Returns
     -------
     str
@@ -104,10 +101,187 @@ def get_atlas_dir():
     return os.path.expanduser("~") + "/.m2g/m2g_atlases"  # local
 
 
-def main():
+def main(result=None):
     """Starting point of the m2g pipeline, assuming that you are using a BIDS organized dataset
     """
+    if result is None:
+        result = get_args()
+    # and ... begin!
+    print("\nBeginning m2g ...")
 
+    # ---------------- Parse CLI arguments ---------------- #
+    input_dir = result.input_dir
+    output_dir = result.output_dir
+    subjects = result.participant_label
+    sessions = result.session_label
+    pipe = result.pipeline
+    acquisition = result.acquisition  # functional pipeline settings
+    mem_gb = result.mem_gb  # functional pipeline settings
+    n_cpus = result.n_cpus
+    tr = result.tr  # functional pipeline settings
+    parcellation_name = result.parcellation
+    push_location = result.push_location
+
+    # arguments to be passed in every m2g run
+    # TODO : change value naming convention to match key naming convention
+    constant_kwargs = {
+        "vox_size": result.voxelsize,
+        "mod_type": result.mod,
+        "track_type": result.filtering_type,
+        "mod_func": result.diffusion_model,
+        "seeds": result.seeds,
+        "reg_style": result.space,
+        "skipeddy": result.skipeddy,
+        "skipreg": result.skipreg,
+        "skull": result.skull,
+        "n_cpus": result.n_cpus,
+    }
+
+    # ---------------- S3 stuff ---------------- #
+    # grab s3 stuff
+    s3 = input_dir.startswith("s3://")
+    creds = bool(cloud_utils.get_credentials())
+    if s3:
+        buck, remo = cloud_utils.parse_path(input_dir)
+        home = os.path.expanduser("~")
+        input_dir = as_directory(home + "/.m2g/input", remove=True)
+        if (not creds) and push_location:
+            raise AttributeError(
+                """No AWS credentials found, but "--push_location" flag called. 
+                Pushing will most likely fail."""
+            )
+
+        # Get S3 input data if needed
+        # TODO : `Flat is better than nested`. Make the logic for this cleaner
+        if subjects is not None:
+            for subject in subjects:
+                if sessions is not None:
+                    for session in sessions:
+                        info = f"sub-{subject}/ses-{session}"
+                        cloud_utils.s3_get_data(buck, remo, input_dir, info=info)
+                else:
+                    info = f"sub-{subject}"
+                    cloud_utils.s3_get_data(buck, remo, input_dir, info=info)
+        else:
+            info = "sub-"
+            cloud_utils.s3_get_data(buck, remo, input_dir, info=info)
+
+    # ---------------- Pre-run checks ---------------- #
+    # check operating system compatibility
+    compatible = sys.platform == "darwin" or sys.platform == "linux"
+    if not compatible:
+        input(
+            "\n\nWARNING: You appear to be running m2g on an operating system that is not macOS or Linux."
+            "\nm2g has not been tested on this operating system and may not work. Press enter to continue.\n\n"
+        )
+
+    # make sure we have AFNI and FSL
+    check_dependencies()
+    # check on input data
+    # make sure input directory is BIDs-formatted
+    assert is_bids(input_dir)
+
+    print(
+        f"""
+        input directory location: {input_dir}. 
+        Input directory contents: {os.listdir(input_dir)}.
+        """
+    )
+
+    # ------- Check if they have selected the functional pipeline ------ #
+    if pipe == "func":
+
+        sweeper = DirectorySweeper(
+            input_dir, subjects=subjects, sessions=sessions, pipeline="func"
+        )
+        scans = sweeper.get_dir_info(pipeline="func")
+
+        home = os.path.expanduser("~")
+        if not os.path.exists(home + "/.m2g"):
+            os.makedirs(f"{home}/.m2g")
+
+        for SubSesFile in scans:
+            subject, session, files = SubSesFile
+            # add subject and session folders to output
+            outDir = f"{output_dir}/sub-{subject}/ses-{session}"
+
+            m2g_func_worker(
+                input_dir,
+                outDir,
+                subject,
+                session,
+                files["t1w"],
+                files["func"],
+                acquisition,
+                tr,
+                mem_gb,
+                n_cpus,
+            )
+
+            # m2g_func_worker()
+            print(
+                f"""
+                Functional Pipeline completed!
+                """
+            )
+
+            if push_location:
+                print(f"Pushing to s3 at {push_location}.")
+                push_buck, push_remo = cloud_utils.parse_path(push_location)
+                cloud_utils.s3_func_push_data(
+                    push_buck,
+                    push_remo,
+                    outDir,
+                    subject=subject,
+                    session=session,
+                    creds=creds,
+                )
+                # shutil.rmtree(f'{output_dir}/sub-{subject}', ignore_errors=False, onerror=None)
+
+        sys.exit(0)
+
+    # ---------------- Grab parcellations, atlases, mask --------------- #
+    # get parcellations, atlas, and mask, then stick it into constant_kwargs
+    atlas_dir = get_atlas_dir()
+    parcellations, atlas, mask, = get_atlas(atlas_dir, constant_kwargs["vox_size"])
+    if parcellation_name is not None:  # filter parcellations
+        parcellations = [
+            file_
+            for file_ in parcellations
+            for parc in parcellation_name
+            if parc in file_
+        ]
+    # Check if parcellations is empty
+    if len(parcellations) == 0:
+        raise ValueError("No valid parcellations found.")
+
+    atlas_stuff = {"atlas": atlas, "mask": mask, "parcellations": parcellations}
+    constant_kwargs.update(atlas_stuff)
+    # parse input directory
+    sweeper = DirectorySweeper(input_dir, subjects=subjects, sessions=sessions)
+    scans = sweeper.get_dir_info()
+
+    # ---------------- Run Pipeline --------------- #
+    # run m2g on the entire BIDs directory.
+    for SubSesFile in scans:
+        subject, session, kwargs = SubSesFile
+        kwargs["outdir"] = f"{output_dir}/sub-{subject}/ses-{session}"
+        kwargs.update(constant_kwargs)
+        m2g_dwi_worker(**kwargs)
+        if push_location:
+            print(f"Pushing to s3 at {push_location}.")
+            push_buck, push_remo = cloud_utils.parse_path(push_location)
+            cloud_utils.s3_push_data(
+                push_buck,
+                push_remo,
+                output_dir,
+                subject=subject,
+                session=session,
+                creds=creds,
+            )
+
+
+def get_args():
     parser = ArgumentParser(
         description="This is an end-to-end connectome estimation pipeline from M3r Images."
     )
@@ -149,7 +323,7 @@ def main():
         action="store",
         help="""Pipline to use when analyzing the input data, 
         either func or dwi. If  Default is dwi.""",
-        default="dwi"
+        default="dwi",
     )
     parser.add_argument(
         "--acquisition",
@@ -164,13 +338,13 @@ def main():
         seqplus - Sequential in the plus direction
         seqminus - Sequential in the minus direction,
         default is alt+z. For more information:https://fcp-indi.github.io/docs/user/func.html""",
-        default="alt+z"
+        default="alt+z",
     )
     parser.add_argument(
         "--tr",
         action="store",
         help="functional scan TR (seconds), default is 2.0",
-        default=2.0
+        default=2.0,
     )
     parser.add_argument(
         "--push_location",
@@ -183,7 +357,7 @@ def main():
         "--parcellation",
         action="store",
         help="The parcellation(s) being analyzed. Multiple parcellations can be provided with a space separated list.",
-        nargs='+',
+        nargs="+",
         default=None,
     )
     parser.add_argument(
@@ -251,167 +425,13 @@ def main():
         default=20,
     )
     parser.add_argument(
-        "--n_cpus",
-        action="store",
-        help="Memory, in GB, to allocate to functional pipeline",
-        default=1,
+        "--n_cpus", action="store", help="CPUs to allocate to pipelines", default=1,
     )
-
-    # and ... begin!
-    print("\nBeginning m2g ...")
-
-    # ---------------- Parse CLI arguments ---------------- #
     result = parser.parse_args()
-    input_dir = result.input_dir
-    output_dir = result.output_dir
-    subjects = result.participant_label
-    sessions = result.session_label
-    pipe=result.pipeline
-    acquisition = result.acquisition    #functional pipeline settings
-    mem_gb = result.mem_gb              #functional pipeline settings
-    n_cpus = result.n_cpus
-    tr=result.tr                        #functional pipeline settings
-    parcellation_name = result.parcellation
-    push_location = result.push_location
 
-    # arguments to be passed in every m2g run
-    # TODO : change value naming convention to match key naming convention
-    constant_kwargs = {
-        "vox_size": result.voxelsize,
-        "mod_type": result.mod,
-        "track_type": result.filtering_type,
-        "mod_func": result.diffusion_model,
-        "seeds": result.seeds,
-        "reg_style": result.space,
-        "skipeddy": result.skipeddy,
-        "skipreg": result.skipreg,
-        "skull": result.skull,
-    }
-
-    # ---------------- S3 stuff ---------------- #
-    # grab s3 stuff
-    s3 = input_dir.startswith("s3://")
-    creds = bool(cloud_utils.get_credentials())
-    if s3:
-        buck, remo = cloud_utils.parse_path(input_dir)
-        home = os.path.expanduser("~")
-        input_dir = as_directory(home + "/.m2g/input", remove=True)
-        if (not creds) and push_location:
-            raise AttributeError(
-                """No AWS credentials found, but "--push_location" flag called. 
-                Pushing will most likely fail."""
-            )
-
-        # Get S3 input data if needed
-        # TODO : `Flat is better than nested`. Make the logic for this cleaner
-        if subjects is not None:
-            for subject in subjects:
-                if sessions is not None:
-                    for session in sessions:
-                        info = f"sub-{subject}/ses-{session}"
-                        cloud_utils.s3_get_data(buck, remo, input_dir, info=info)
-                else:
-                    info = f"sub-{subject}"
-                    cloud_utils.s3_get_data(buck, remo, input_dir, info=info)
-        else:
-            info = "sub-"
-            cloud_utils.s3_get_data(buck, remo, input_dir, info=info)
-
-    # ---------------- Pre-run checks ---------------- #
-    # check operating system compatibility
-    compatible = sys.platform == "darwin" or sys.platform == "linux"
-    if not compatible:
-        input(
-            "\n\nWARNING: You appear to be running m2g on an operating system that is not macOS or Linux."
-            "\nm2g has not been tested on this operating system and may not work. Press enter to continue.\n\n"
-        )
-
-    # make sure we have AFNI and FSL
-    check_dependencies()
-    # check on input data
-    # make sure input directory is BIDs-formatted
-    assert is_bids(input_dir)
-
-    print(
-        f"""
-        input directory location: {input_dir}. 
-        Input directory contents: {os.listdir(input_dir)}.
-        """
-    )
-
-    # ------- Check if they have selected the functional pipeline ------ #
-    if pipe == "func":
-        
-        sweeper = DirectorySweeper(input_dir, subjects=subjects, sessions=sessions, pipeline='func')
-        scans = sweeper.get_dir_info(pipeline='func')
-        
-        home = os.path.expanduser("~")
-        if not os.path.exists(home + '/.m2g'):
-            os.makedirs(f"{home}/.m2g")
-
-        
-        for SubSesFile in scans:
-            subject, session, files = SubSesFile
-            #add subject and session folders to output
-            outDir = f"{output_dir}/sub-{subject}/ses-{session}"
-            
-            m2g_func_worker(input_dir, outDir, subject, session, files['t1w'], files['func'], acquisition, tr, mem_gb, n_cpus)
-        
-            #m2g_func_worker()
-            print(
-                f"""
-                Functional Pipeline completed!
-                """
-            )
-
-            if push_location:
-                print(f"Pushing to s3 at {push_location}.")
-                push_buck, push_remo = cloud_utils.parse_path(push_location)
-                cloud_utils.s3_func_push_data(
-                    push_buck,
-                    push_remo,
-                    outDir,
-                    subject=subject,
-                    session=session,
-                    creds=creds,
-                )
-                #shutil.rmtree(f'{output_dir}/sub-{subject}', ignore_errors=False, onerror=None)
-
-        sys.exit(0)
-
-
-    # ---------------- Grab parcellations, atlases, mask --------------- #
-    # get parcellations, atlas, and mask, then stick it into constant_kwargs
-    atlas_dir = get_atlas_dir()
-    parcellations, atlas, mask, = get_atlas(atlas_dir, constant_kwargs["vox_size"])
-    if parcellation_name is not None:  # filter parcellations
-        parcellations = [file_ for file_ in parcellations for parc in parcellation_name if parc in file_]
-    atlas_stuff = {"atlas": atlas, "mask": mask, "parcellations": parcellations}
-    constant_kwargs.update(atlas_stuff)
-
-    # parse input directory
-    sweeper = DirectorySweeper(input_dir, subjects=subjects, sessions=sessions)
-    scans = sweeper.get_dir_info()
-
-    # ---------------- Run Pipeline --------------- #
-    # run m2g on the entire BIDs directory.
-    for SubSesFile in scans:
-        subject, session, kwargs = SubSesFile
-        kwargs["outdir"] = f"{output_dir}/sub-{subject}/ses-{session}"
-        kwargs.update(constant_kwargs)
-        m2g_dwi_worker(**kwargs)
-        if push_location:
-            print(f"Pushing to s3 at {push_location}.")
-            push_buck, push_remo = cloud_utils.parse_path(push_location)
-            cloud_utils.s3_push_data(
-                push_buck,
-                push_remo,
-                output_dir,
-                subject=subject,
-                session=session,
-                creds=creds,
-            )
+    return result
 
 
 if __name__ == "__main__":
-    main()
+    result = get_args()
+    main(result)
