@@ -1,14 +1,11 @@
 # ndmg
 
-![Downloads shield](https://img.shields.io/pypi/dm/ndmg.svg)
-[![](https://img.shields.io/pypi/v/ndmg.svg)](https://pypi.python.org/pypi/ndmg)
-![](https://travis-ci.org/neurodata/ndmg.svg?branch=master)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1161284.svg)](https://doi.org/10.5281/zenodo.1161284)
+![Downloads shield](https://img.shields.io/pypi/dm/m2g.svg)
+[![PyPI](https://img.shields.io/pypi/v/m2g.svg)](https://pypi.python.org/pypi/m2g)
+[![Travis CI](https://travis-ci.org/neurodata/m2g.svg?branch=deploy)](https://travis-ci.org/github/neurodata/m2g)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.595684.svg)](https://doi.org/10.5281/zenodo.595684)
 [![Code Climate](https://codeclimate.com/github/neurodata/ndmg/badges/gpa.svg)](https://codeclimate.com/github/neurodata/ndmg)
 [![DockerHub](https://img.shields.io/docker/pulls/bids/ndmg.svg)](https://hub.docker.com/r/bids/ndmg)
-[![OpenNeuro](http://bids.neuroimaging.io/openneuro_badge.svg)](https://openneuro.org)
-
-![](./docs/nutmeg.png)
 
 NeuroData's MR Graphs package, **ndmg** (pronounced "**_nutmeg_**"), is a turn-key pipeline which uses structural and diffusion MRI data to estimate multi-resolution connectomes reliably and scalably.
 
