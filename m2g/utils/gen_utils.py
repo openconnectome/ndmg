@@ -37,13 +37,13 @@ from dipy.align.reslice import reslice
 class DirectorySweeper:
     """
     Class for parsing through a BIDs-formatted directory tree.
-    
+
     Parameters
     ----------
     bdir : str
         BIDs-formatted directory containing dwi data.
     subjects : list or str, optional
-        The subjects to run m2g on. 
+        The subjects to run m2g on.
         If None, parse through the whole directory.
     sessions : list or str, optional
         The sessions to run m2g with.
@@ -52,7 +52,7 @@ class DirectorySweeper:
         The pipeline you are using, 'func' or 'dwi', default is 'dwi'
     """
 
-    def __init__(self, bdir, subjects=None, sessions=None, pipeline='dwi'):
+    def __init__(self, bdir, subjects=None, sessions=None, pipeline="dwi"):
         self.bdir = bdir
         self.layout = bids.BIDSLayout(bdir)
         if subjects is None:
@@ -61,15 +61,17 @@ class DirectorySweeper:
             sessions = self.layout.get_sessions()
 
         # get list of subject / session pairs
-        self.pairs = self.get_pairs(subjects=subjects, sessions=sessions, pipeline=pipeline)
+        self.pairs = self.get_pairs(
+            subjects=subjects, sessions=sessions, pipeline=pipeline
+        )
 
     def __repr__(self):
         return str(self.layout)
 
-    def get_pairs(self, subjects, sessions, pipeline='dwi'):
+    def get_pairs(self, subjects, sessions, pipeline="dwi"):
         """
         Return subject/session pairs.
-        
+
         Parameters
         ----------
         subjects : str or list
@@ -78,7 +80,7 @@ class DirectorySweeper:
             Sessions to retrieve.
         pipeline : str, optional
         The pipeline you are using, 'func' or 'dwi', default is 'dwi'
-        
+
         Returns
         -------
         list
@@ -87,9 +89,9 @@ class DirectorySweeper:
         """
         pairs = []
         # Change suffix to be 'bold' because prefixes aren't a thing
-        if pipeline == 'func':
-            pipeline='bold'
-        
+        if pipeline == "func":
+            pipeline = "bold"
+
         kwargs = dict(
             suffix=pipeline,
             extension=["nii", "nii.gz"],
@@ -105,10 +107,10 @@ class DirectorySweeper:
             raise ValueError(f"No pairs found for {self}")
         return pairs
 
-    def get_files(self, subject, session, pipeline='dwi'):
+    def get_files(self, subject, session, pipeline="dwi"):
         """
         Retrieve all relevant files from a dataframe.
-        
+
         Parameters
         ----------
         subject : str
@@ -117,27 +119,40 @@ class DirectorySweeper:
             Session to get files for.
         pipeline : str, optional
         The pipeline you are using, 'func' or 'dwi', default is 'dwi'
-        
+
         Returns
         -------
         dict
             Dictionary of all files from a single session.
         """
 
-        if pipeline == 'func':
-            func = self.layout.get(return_type='filename', session=session, subject=subject, suffix='bold')
-            if len(func) == 1: #TODO:Account for one or multiple functional scans per anatomical image
+        if pipeline == "func":
+            func = self.layout.get(
+                return_type="filename", session=session, subject=subject, suffix="bold"
+            )
+            if (
+                len(func) == 1
+            ):  # TODO:Account for one or multiple functional scans per anatomical image
                 [func] = func
-            [anat] = self.layout.get(return_type="filename", session=session, subject=subject, suffix=['T1w','t1w'])
+            [anat] = self.layout.get(
+                return_type="filename",
+                session=session,
+                subject=subject,
+                suffix=["T1w", "t1w"],
+            )
             files = {"func": func, "t1w": anat}
-        else:#TODO: allow for more than one dwi scan to exist in the dwi directory for processing
-            bval, bvec, dwi = self.layout.get(return_type="filename", session=session, subject=subject, suffix='dwi')
-            [anat] = self.layout.get(return_type="filename", session=session, subject=subject, suffix='T1w')
+        else:  # TODO: allow for more than one dwi scan to exist in the dwi directory for processing
+            bval, bvec, dwi = self.layout.get(
+                return_type="filename", session=session, subject=subject, suffix="dwi"
+            )
+            [anat] = self.layout.get(
+                return_type="filename", session=session, subject=subject, suffix="T1w"
+            )
             files = {"dwi": dwi, "bvals": bval, "bvecs": bvec, "t1w": anat}
 
         return files
 
-    def get_dir_info(self, pipeline='dwi'):
+    def get_dir_info(self, pipeline="dwi"):
         """
         Parse an entire BIDSLayout for scan parameters.
 
@@ -145,11 +160,11 @@ class DirectorySweeper:
         ----------
         pipeline : str, optional
         The pipeline you are using, 'func' or 'dwi', default is 'dwi'
-        
+
         Returns
         -------
         list
-            List of SubSesFiles namedtuples. 
+            List of SubSesFiles namedtuples.
             SubSesFile.files is a dictionary of files.
             SubSesFile.subject is the subject string.
             SubSesFile.session is the session string.
@@ -158,7 +173,7 @@ class DirectorySweeper:
         scans = []
         SubSesFiles = namedtuple("SubSesFiles", ["subject", "session", "files"])
 
-        #remove duplicate subject/session pairs for either 
+        # remove duplicate subject/session pairs for either
         self.pairs = list(set(self.pairs))
         # append subject, session, and files for each relevant session to scans
         for subject, session in self.pairs:
@@ -177,10 +192,10 @@ class DirectorySweeper:
         return scans
 
 
-def make_initial_directories(outdir: Path, dwi:Path, parcellations=[]) -> None:
+def make_initial_directories(outdir: Path, dwi: Path, parcellations=[]) -> None:
     """
     Make starting directory tree.
-    
+
     Parameters
     ----------
     outdir : Path
@@ -190,7 +205,7 @@ def make_initial_directories(outdir: Path, dwi:Path, parcellations=[]) -> None:
     parcellations : list, optional
         Set of all parcellations we're using, by default []
     """
-    
+
     # populate connectome_dir with folder for each parcellation
     connectome_dirs = []
     for parc in parcellations:
@@ -198,30 +213,33 @@ def make_initial_directories(outdir: Path, dwi:Path, parcellations=[]) -> None:
         p = str(f"connectomes_d/{name}")
         connectome_dirs.append(p)
 
-    init_dirs = {'anat_dirs':["anat_d/preproc", "anat_d/registered"],
-    'dwi_dirs':["dwi/fiber", "dwi/preproc", "dwi/tensor"],
-    'qa_dirs':["qa_d/adjacency",
-        "qa_d/fibers",
-        "qa_d/graphs",
-        "qa_d/graphs_plotting",
-        "qa_d/mri",
-        "qa_d/reg",
-        "qa_d/tensor",],
-    'tmp_dirs':["tmp_d/reg_a", "tmp_d/reg_m"],
-    "connectome_dirs":connectome_dirs,
-    "connectomes":[]}
-
+    init_dirs = {
+        "anat_dirs": ["anat_d/preproc", "anat_d/registered"],
+        "dwi_dirs": ["dwi/fiber", "dwi/preproc", "dwi/tensor"],
+        "qa_dirs": [
+            "qa_d/adjacency",
+            "qa_d/fibers",
+            "qa_d/graphs",
+            "qa_d/graphs_plotting",
+            "qa_d/mri",
+            "qa_d/reg",
+            "qa_d/tensor",
+        ],
+        "tmp_dirs": ["tmp_d/reg_a", "tmp_d/reg_m"],
+        "connectome_dirs": connectome_dirs,
+        "connectomes": [],
+    }
 
     # create directories
     for cat in init_dirs:
-        replace=[]
+        replace = []
         for p in init_dirs[cat]:
             full_path = outdir / p
             full_path.mkdir(parents=True, exist_ok=True)
             replace.append(full_path)
         init_dirs[cat] = replace
 
-    init_dirs['outdir'] = outdir
+    init_dirs["outdir"] = outdir
 
     # generate list of connectome file locations
     dwi_name = get_filename(dwi)
@@ -232,7 +250,7 @@ def make_initial_directories(outdir: Path, dwi:Path, parcellations=[]) -> None:
         connectome = f"{dwi_name}_{name}_connectome.csv"
         connectomes.append(str(folder / connectome))
 
-    init_dirs['connectomes'] = connectomes
+    init_dirs["connectomes"] = connectomes
 
     return init_dirs
 
@@ -248,14 +266,14 @@ def has_files(dirname: Path):
 def as_directory(dir_, remove=False, return_as_path=False):
     """
     Convenience function to make a directory while returning it.
-    
+
     Parameters
     ----------
     dir_ : str, Path
         File location to directory.
     remove : bool, optional
         Whether to remove a previously existing directory, by default False
-    
+
     Returns
     -------
     str
@@ -326,7 +344,7 @@ def print_arguments(inputs=[], outputs=[]):
     ----------
     inputs : List[int]
         Set of integer locations of file inputs to functions.
-    
+
     outputs : List[int]
         Set of integer locations of locations of file outputs generated by functions.
 
@@ -390,12 +408,12 @@ def is_bids(input_dir):
     """
     Make sure that the input data is BIDs-formatted.
     If it's BIDs-formatted, except for a `dataset_description.json` file, return True.
-    
+
     Returns
     -------
     bool
         True if the input directory is BIDs-formatted
-    
+
     Raises
     ------
     ValueError
@@ -415,7 +433,7 @@ def is_bids(input_dir):
 def create_datadescript(input_dir):
     """
     Creates a simple `data_description.json` file in the root of the input directory. Necessary for proper BIDs formatting.
-    
+
     Parameters
     ----------
     input_dir : str
@@ -477,7 +495,7 @@ def run(cmd):
     Print the command.
     Execute a command string on the shell (on bash).
     Exists so that the shell prints out commands as m2g calls them.
-    
+
     Parameters
     ----------
     cmd : str
@@ -673,7 +691,7 @@ def make_gtab_and_bmask(fbval: str, fbvec: str, dwi_file: str, preproc_dir: Path
 
 
 def normalize_xform(img):
-    """ Set identical, valid qform and sform matrices in an image
+    """Set identical, valid qform and sform matrices in an image
     Selects the best available affine (sform > qform > shape-based), and
     coerces it to be qform-compatible (no shears).
     The resulting image represents this same affine as both qform and sform,
@@ -826,7 +844,7 @@ def match_target_vox_res(img_file: str, vox_size, outdir: Path, sens):
         path to file to be resliced
     vox_size : str
         target voxel resolution ('4mm', '2mm', or '1mm')
-    preproc_dir : 
+    preproc_dir :
     sens : str
         type of data being analyzed ('dwi' or 'anat')
 

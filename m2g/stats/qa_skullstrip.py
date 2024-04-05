@@ -30,11 +30,9 @@ from m2g.utils.qa_utils import get_min_max, opaque_colorscale, pad_im
 from m2g.utils.gen_utils import get_filename, get_braindata
 
 
-
-
-
 def gen_overlay_pngs(
-    brain, original, outdir, loc=0, mean=False, minthr=2, maxthr=95, edge=False):
+    brain, original, outdir, loc=0, mean=False, minthr=2, maxthr=95, edge=False
+):
     """Generate a QA image for skullstrip.
     will call the function plot_overlays_skullstrip
 
@@ -73,10 +71,9 @@ def gen_overlay_pngs(
     fig.savefig(f"{outdir}/qa_skullstrip__{original_name}.png", format="png")
 
 
-
-
-
-def plot_overlays_skullstrip(brain, original, cmaps=None, minthr=2, maxthr=95, edge=False):
+def plot_overlays_skullstrip(
+    brain, original, cmaps=None, minthr=2, maxthr=95, edge=False
+):
     """Shows the skull-stripped brain (green) overlaid on the original t1w (magenta)
 
     Parameter
@@ -112,8 +109,7 @@ def plot_overlays_skullstrip(brain, original, cmaps=None, minthr=2, maxthr=95, e
     if original.shape != brain.shape:
         raise ValueError("Two files are not the same shape.")
     brain = pad_im(brain, max(brain_shape[0:3]), pad_val=0, rgb=False)
-    original = pad_im(original,max(brain_shape[0:3]), pad_val=0, rgb=False)
-
+    original = pad_im(original, max(brain_shape[0:3]), pad_val=0, rgb=False)
 
     if cmaps is None:
         cmap1 = LinearSegmentedColormap.from_list("mycmap1", ["white", "magenta"])
@@ -166,29 +162,32 @@ def plot_overlays_skullstrip(brain, original, cmaps=None, minthr=2, maxthr=95, e
             plt.yticks([])
 
             # Set the frame invisible
-            ax.spines['top'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['bottom'].set_visible(False)
-            ax.spines['left'].set_visible(False)
+            ax.spines["top"].set_visible(False)
+            ax.spines["right"].set_visible(False)
+            ax.spines["bottom"].set_visible(False)
+            ax.spines["left"].set_visible(False)
             ax.imshow(atl, interpolation="none", cmap=cmaps[0], alpha=0.9)
             ax.imshow(
                 opaque_colorscale(
                     cmaps[1], image, alpha=0.9, vmin=min_val, vmax=max_val
                 )
             )
-            if idx ==3:
-                plt.plot(0, 0, "-", c="magenta", label='skull')
-                plt.plot(0, 0, "-", c="green", label='brain')
+            if idx == 3:
+                plt.plot(0, 0, "-", c="magenta", label="skull")
+                plt.plot(0, 0, "-", c="green", label="brain")
                 # box = ax.get_position()
                 # ax.set_position([box.x0, box.y0, box.width, box.height*0.8])
-                plt.legend(loc='best', fontsize=15, frameon=False, bbox_to_anchor=(1.5, 1.5))
+                plt.legend(
+                    loc="best", fontsize=15, frameon=False, bbox_to_anchor=(1.5, 1.5)
+                )
 
     # Set title for the whole picture
     a, b, c = brain_shape
-    title = 'Skullstrip QA. Scan Volume : ' + str(a) + '*' + str(b) + '*' + str(c)
+    title = "Skullstrip QA. Scan Volume : " + str(a) + "*" + str(b) + "*" + str(c)
     foverlay.suptitle(title, fontsize=24)
     foverlay.set_size_inches(12.5, 10.5, forward=True)
     return foverlay
+
 
 def get_true_volume(brain_volume):
     """returns percentile dimensions to slice actual brain volume for qa_skullstrip plotting
@@ -208,7 +207,8 @@ def get_true_volume(brain_volume):
     z = get_range(true_volume, 2)
     return x, y, z
 
-def get_range(array,i):
+
+def get_range(array, i):
     """get percentiles of array
 
     Parameter

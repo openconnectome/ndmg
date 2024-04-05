@@ -21,6 +21,7 @@ from argparse import ArgumentParser
 from scipy import ndimage
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib as mpl
+
 mpl.use("Agg")  # very important above pyplot import
 from nilearn.plotting.edge_detect import _edge_map as edge_map
 import matplotlib.pyplot as plt
@@ -31,7 +32,7 @@ def reg_mri_pngs(
 ):
     """
     A function to create and save registered brain slice figures.
-    
+
     Parameter
     ---------
     mri: nifti file
@@ -39,14 +40,14 @@ def reg_mri_pngs(
     atlas: nifti file
         the reference brain file used in each registration step.
     outdir: str
-        directory where output png file is saved. 
+        directory where output png file is saved.
     loc: int
         which dimension of the 4d brain data to use
     mean: bool
         whether to calculate the mean of the 4d brain data
         If False, the loc=0 dimension of the data (mri_data[:, :, :, loc]) is used
     minthr: int
-        lower percentile threshold 
+        lower percentile threshold
     maxthr: int
         upper percentile threshold
     """
@@ -65,26 +66,30 @@ def reg_mri_pngs(
 
     fig = plot_overlays(atlas_data, mr_data, [cmap1, cmap2], minthr, maxthr, edge)
     # name and save the file
-    fig.savefig(outdir + "/" + get_filename(mri) + "_2_" + get_filename(atlas) + ".png", format="png")
-    
+    fig.savefig(
+        outdir + "/" + get_filename(mri) + "_2_" + get_filename(atlas) + ".png",
+        format="png",
+    )
+
     plt.close()
+
 
 def plot_brain(brain, minthr=2, maxthr=95, edge=False):
     """
     A function to plot a brain.
-    
+
     Parameter
     ---------
     brain: str, nifti image, numpy.ndarray
         an object to open the data for a registered brain. Can be a string (path to a brain file),
         nibabel.nifti1.nifti1image, or a numpy.ndarray.
     minthr: int
-        lower percentile threshold 
+        lower percentile threshold
     maxthr: int
         upper percentile threshold
     edge: bool
         whether to use normalized luminance data
-        If None, the respective min and max of the color array is used. 
+        If None, the respective min and max of the color array is used.
     Returns
     ---------
     fbr: matplotlib.figure.Figure
@@ -99,9 +104,21 @@ def plot_brain(brain, minthr=2, maxthr=95, edge=False):
         z = [88, 103, 107]
     else:
         brain_volume = brain.shape
-        x = [int(brain_volume[0] * 0.35), int(brain_volume[0] * 0.51), int(brain_volume[0] * 0.65)]
-        y = [int(brain_volume[1] * 0.35), int(brain_volume[1] * 0.51), int(brain_volume[1] * 0.65)]
-        z = [int(brain_volume[2] * 0.35), int(brain_volume[2] * 0.51), int(brain_volume[2] * 0.65)]
+        x = [
+            int(brain_volume[0] * 0.35),
+            int(brain_volume[0] * 0.51),
+            int(brain_volume[0] * 0.65),
+        ]
+        y = [
+            int(brain_volume[1] * 0.35),
+            int(brain_volume[1] * 0.51),
+            int(brain_volume[1] * 0.65),
+        ]
+        z = [
+            int(brain_volume[2] * 0.35),
+            int(brain_volume[2] * 0.51),
+            int(brain_volume[2] * 0.65),
+        ]
     coords = (x, y, z)
 
     labs = [
@@ -152,7 +169,7 @@ def plot_brain(brain, minthr=2, maxthr=95, edge=False):
 def plot_overlays(atlas, b0, cmaps=None, minthr=2, maxthr=95, edge=False):
     """
     A function to plot the overlay figures of registered and reference brain slices.
-    
+
     Parameter
     ---------
     atlas: str, nifti image, numpy.ndarray
@@ -165,12 +182,12 @@ def plot_overlays(atlas, b0, cmaps=None, minthr=2, maxthr=95, edge=False):
 
     cmap: Colormap objects based on lookup tables using linear segments.
     minthr: int
-        lower percentile threshold 
+        lower percentile threshold
     maxthr: int
         upper percentile threshold
     edge: bool
         whether to use normalized luminance data
-        If None, the respective min and max of the color array is used. 
+        If None, the respective min and max of the color array is used.
 
     Returns
     ---------
@@ -194,18 +211,42 @@ def plot_overlays(atlas, b0, cmaps=None, minthr=2, maxthr=95, edge=False):
         y = [82, 107, 142]
         z = [88, 103, 107]
     else:
-        x = [int(brain_volume[0] * 0.35), int(brain_volume[0] * 0.51), int(brain_volume[0] * 0.65)]
-        y = [int(brain_volume[1] * 0.35), int(brain_volume[1] * 0.51), int(brain_volume[1] * 0.65)]
-        z = [int(brain_volume[2] * 0.35), int(brain_volume[2] * 0.51), int(brain_volume[2] * 0.65)]
+        x = [
+            int(brain_volume[0] * 0.35),
+            int(brain_volume[0] * 0.51),
+            int(brain_volume[0] * 0.65),
+        ]
+        y = [
+            int(brain_volume[1] * 0.35),
+            int(brain_volume[1] * 0.51),
+            int(brain_volume[1] * 0.65),
+        ]
+        z = [
+            int(brain_volume[2] * 0.35),
+            int(brain_volume[2] * 0.51),
+            int(brain_volume[2] * 0.65),
+        ]
     coords = (x, y, z)
-    
+
     atlas = pad_im(atlas, max(brain_volume[0:3]), 0, False)
     b0 = pad_im(b0, max(brain_volume[0:3]), 0, False)
-    x = [int(max(brain_volume[0:3]) * 0.35), int(max(brain_volume[0:3]) * 0.51), int(max(brain_volume[0:3]) * 0.65)]
-    y = [int(max(brain_volume[0:3]) * 0.35), int(max(brain_volume[0:3]) * 0.51), int(max(brain_volume[0:3]) * 0.65)]
-    z = [int(max(brain_volume[0:3]) * 0.35), int(max(brain_volume[0:3]) * 0.51), int(max(brain_volume[0:3]) * 0.65)]
+    x = [
+        int(max(brain_volume[0:3]) * 0.35),
+        int(max(brain_volume[0:3]) * 0.51),
+        int(max(brain_volume[0:3]) * 0.65),
+    ]
+    y = [
+        int(max(brain_volume[0:3]) * 0.35),
+        int(max(brain_volume[0:3]) * 0.51),
+        int(max(brain_volume[0:3]) * 0.65),
+    ]
+    z = [
+        int(max(brain_volume[0:3]) * 0.35),
+        int(max(brain_volume[0:3]) * 0.51),
+        int(max(brain_volume[0:3]) * 0.65),
+    ]
     coords = (x, y, z)
-    
+
     labs = [
         "Sagittal Slice",
         "Coronal Slice",
@@ -244,34 +285,33 @@ def plot_overlays(atlas, b0, cmaps=None, minthr=2, maxthr=95, edge=False):
                 image = edge_map(image).data
                 image[image > 0] = max_val
                 image[image == 0] = min_val
-            #Set the axis invisible
+            # Set the axis invisible
             plt.xticks([])
             plt.yticks([])
-            
-            #Set the frame invisible
-            ax.spines['top'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['bottom'].set_visible(False)
-            ax.spines['left'].set_visible(False)
-            
+
+            # Set the frame invisible
+            ax.spines["top"].set_visible(False)
+            ax.spines["right"].set_visible(False)
+            ax.spines["bottom"].set_visible(False)
+            ax.spines["left"].set_visible(False)
+
             ax.imshow(atl, interpolation="none", cmap=cmaps[0], alpha=0.9)
             ax.imshow(
                 opaque_colorscale(
                     cmaps[1], image, alpha=0.9, vmin=min_val, vmax=max_val
                 )
             )
-            
-            #set the legend
+
+            # set the legend
             if idx == 3:
-                plt.plot(0,0,"-",c="pink",label='registered')
-                plt.plot(0,0,"-",c="green",label='reference')
-                plt.legend(loc='best',fontsize=12,bbox_to_anchor=(1.5,1.5))
-            
-    #Set title for the whole picture
-    a,b,c = brain_volume
-    title = 'QA For Registration\nVolume:'+ str(a) +'*'+ str(b) + '*' + str(c)+'\n'
-    foverlay.suptitle(title,fontsize=24)
+                plt.plot(0, 0, "-", c="pink", label="registered")
+                plt.plot(0, 0, "-", c="green", label="reference")
+                plt.legend(loc="best", fontsize=12, bbox_to_anchor=(1.5, 1.5))
+
+    # Set title for the whole picture
+    a, b, c = brain_volume
+    title = "QA For Registration\nVolume:" + str(a) + "*" + str(b) + "*" + str(c) + "\n"
+    foverlay.suptitle(title, fontsize=24)
     foverlay.set_size_inches(12.5, 10.5, forward=True)
     foverlay.tight_layout()
     return foverlay
-

@@ -30,20 +30,20 @@ import matplotlib.pyplot as plt
 def generate_3_d_directions(peak_dirs, peak_values):
     """
     Generates 3-d data required for plotting directions for the entire brain volume
-    
+
     Parameters
     -----------
     peak_dirs: np array
         peak_dirs from tractography model (x,y,z directional vectors)
     peak_values: np array
         peak_values from tractography model (magnitude)
-    
+
     Returns
     -----------
     centers: np array
         cartesian coordinates
     directions: np array
-        vector directions (x,y,z) in flattened format 
+        vector directions (x,y,z) in flattened format
     directions_colors: np array
         vector directions encoded as RGB colors in flattened format
     heights: np array
@@ -80,22 +80,22 @@ def generate_3_d_directions(peak_dirs, peak_values):
 def plot_directions(peak_dirs, peak_values, x_angle, y_angle, size=(300, 300)):
     """
     Opens a 3-d fury window of the maximum peaks visualized
-    
-    To show a slice, provide a sliced volume of the peak_dirs and peak_values and adjust the x_angle and y_angle 
+
+    To show a slice, provide a sliced volume of the peak_dirs and peak_values and adjust the x_angle and y_angle
     See Tractography Directional Field QA Tutorial for examples
-    
+
     Parameters
     -----------
     peak_dirs: np array
-        peak directional vector (x,y,z)  
+        peak directional vector (x,y,z)
     peak_values: np array
-        peak values/magnitude 
+        peak values/magnitude
     x_angle: int
         angle to rotate image along x axis
     y_angle: int
         angle to rotate image along y axis
     size: tuple
-        size of fury window 
+        size of fury window
     """
     centers, directions, directions_colors, heights = generate_3_d_directions(
         peak_dirs, peak_values
@@ -114,13 +114,13 @@ def plot_directions(peak_dirs, peak_values, x_angle, y_angle, size=(300, 300)):
 def create_qa_figure(peak_dirs, peak_values, output_dir, model):
     """
     Creates a 9x9 figure of the 3-d volume and saves it
-    
+
     Parameters
     -----------
     peak_dirs: np array
         peak directional vector (x,y,z)
     peak_values: np array
-        peak values/magnitude 
+        peak values/magnitude
     output_dir: str
         location to save qa figure
     model: str

@@ -95,7 +95,7 @@ def get_atlas(atlas_dir, vox_size):
 def get_atlas_dir():
     """
     Gets the location of m2g's atlases.
-    
+
     Returns
     -------
     str
@@ -108,8 +108,7 @@ def get_atlas_dir():
 
 
 def main():
-    """Starting point of the m2g pipeline, assuming that you are using a BIDS organized dataset
-    """
+    """Starting point of the m2g pipeline, assuming that you are using a BIDS organized dataset"""
     parser = ArgumentParser(
         description="This is an end-to-end connectome estimation pipeline from fMRI and diffusion weighted MRI data."
     )
@@ -174,7 +173,7 @@ def main():
         "--tr",
         action="store",
         help="functional scan TR (seconds), default is 2.0",
-        default=2.0
+        default=2.0,
     )
     parser.add_argument(
         "--push_location",
@@ -345,10 +344,14 @@ def main():
     )
 
     # ---------------- Grab parcellations, atlases, mask --------------- #
-    #TODO: Test that you can locate parcellations elsewhere
+    # TODO: Test that you can locate parcellations elsewhere
     # get parcellations, atlas, and mask, then stick it into constant_kwargs
     atlas_dir = get_atlas_dir()
-    parcellations, atlas, mask, = get_atlas(atlas_dir, constant_kwargs["vox_size"])
+    (
+        parcellations,
+        atlas,
+        mask,
+    ) = get_atlas(atlas_dir, constant_kwargs["vox_size"])
     if parcellation_name is not None:  # filter parcellations
         parcellations = [
             file_
@@ -364,7 +367,7 @@ def main():
 
     # ------- Check if they have selected the functional pipeline ------ #
     if pipe == "func" or pipe == "both":
-        
+
         sweeper = DirectorySweeper(
             input_dir, subjects=subjects, sessions=sessions, pipeline="func"
         )
@@ -393,15 +396,14 @@ def main():
                 mem_gb,
                 n_cpus,
             )
-            
+
             print(
                 f"""
                 Functional Pipeline completed!
                 """
             )
-            #Reorganize output files from CPAC to a more user-friendly version
+            # Reorganize output files from CPAC to a more user-friendly version
             func_dir_reorg(outDir)
-
 
             if push_location:
                 print(f"Pushing to s3 at {push_location}.")
@@ -414,10 +416,9 @@ def main():
                     session=session,
                     creds=creds,
                 )
-        if pipe != 'both':
+        if pipe != "both":
             sys.exit(0)
 
-    
     # ------------ Continue DWI pipeline ------------ #
 
     constant_kwargs.update(atlas_info)
@@ -443,7 +444,6 @@ def main():
                 session=session,
                 creds=creds,
             )
-            
 
 
 if __name__ == "__main__":

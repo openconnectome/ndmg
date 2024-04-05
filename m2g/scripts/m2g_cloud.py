@@ -149,14 +149,14 @@ def crawl_bucket(bucket, path, jobdir):
     # set up bucket crawl
     subj_pattern = r"(?<=sub-)(\w*)(?=/ses)"
     sesh_pattern = r"(?<=ses-)(\d*)"
-    all_subfiles = get_matching_s3_objects(bucket, path + "/sub-", '.nii.gz')
+    all_subfiles = get_matching_s3_objects(bucket, path + "/sub-", ".nii.gz")
     subjs = list(set(re.findall(subj_pattern, obj)[0] for obj in all_subfiles))
     seshs = OrderedDict()
 
     # populate seshs
     for subj in subjs:
         prefix = f"{path}/sub-{subj}/"
-        all_seshfiles = get_matching_s3_objects(bucket, prefix, '.nii.gz')
+        all_seshfiles = get_matching_s3_objects(bucket, prefix, ".nii.gz")
         sesh = list(set([re.findall(sesh_pattern, obj)[0] for obj in all_seshfiles]))
         if sesh != []:
             seshs[subj] = sesh
@@ -399,7 +399,7 @@ def kill_jobs(jobdir, reason='"Killing job"'):
         batch.terminate_job(jobId=jid, reason=reason)
 
 
-#%%
+# %%
 def main():
     parser = ArgumentParser(
         description="This is a pipeline for running BIDs-formatted diffusion MRI datasets through AWS S3 to produce connectomes."
@@ -442,7 +442,7 @@ def main():
         action="store",
         help="""Pipline to use when analyzing the input data, 
         either func or dwi. If  Default is dwi.""",
-        default="dwi"
+        default="dwi",
     )
     parser.add_argument(
         "--acquisition",
@@ -457,7 +457,7 @@ def main():
         seqplus - Sequential in the plus direction
         seqminus - Sequential in the minus direction,
         default is alt+z. For more information:https://fcp-indi.github.io/docs/user/func.html""",
-        default="alt+z"
+        default="alt+z",
     )
     parser.add_argument(
         "--tr",
@@ -474,7 +474,7 @@ def main():
     parser.add_argument(
         "--n_cpus",
         action="store",
-        help="Number of cpus that the functional pipeline has access to. Not required for dwi pipeline. Default is 2 cpus."
+        help="Number of cpus that the functional pipeline has access to. Not required for dwi pipeline. Default is 2 cpus.",
     )
     parser.add_argument(
         "--parcellation",
@@ -521,7 +521,7 @@ def main():
     )
 
     result = parser.parse_args()
-    
+
     state = result.state
     bucket = result.bucket
     path = result.bidsdir

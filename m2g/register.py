@@ -65,7 +65,7 @@ def direct_streamline_norm(streams, fa_path, outdir: Path):
 
     # Warp streamlines
     adjusted_affine = affine_map.affine.copy()
-    adjusted_affine[1][3] = -adjusted_affine[1][3] / vox_size ** 2
+    adjusted_affine[1][3] = -adjusted_affine[1][3] / vox_size**2
     mni_streamlines = deform_streamlines(
         streamlines.streamlines,
         deform_field=mapping.get_forward_field()[-1:],
@@ -152,7 +152,6 @@ class DmriReg:
         self.qa = str(outdir / "qa_d")
         self.qa_reg = str(Path(self.qa) / "reg")
 
-
         self.simple = simple
         self.nodif_B0 = nodif_B0
         self.nodif_B0_mask = nodif_B0_mask
@@ -231,8 +230,7 @@ class DmriReg:
         location indicated by self.map_path
         """
 
-
-        #TODO: Why is the t1w skullstripped here? Shouldn't this be part of the preprocessing?
+        # TODO: Why is the t1w skullstripped here? Shouldn't this be part of the preprocessing?
         # BET needed for this, as afni 3dautomask only works on 4d volumes
         print("Extracting brain from raw T1w image...")
         reg_utils.t1w_skullstrip(self.t1w, self.t1w_brain, self.skull)
@@ -347,7 +345,7 @@ class DmriReg:
                 )
 
                 # Get mat from MNI -> T1
-                #TODO: I don't think the resulting matrix is used anywhere? Double check and then remove is useless...
+                # TODO: I don't think the resulting matrix is used anywhere? Double check and then remove is useless...
                 cmd = f"convert_xfm -omat {self.mni2t1_xfm_init} -inverse {self.t12mni_xfm_init}"
                 print(cmd)
                 gen_utils.run(cmd)
