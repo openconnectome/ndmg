@@ -32,6 +32,7 @@ from matplotlib import pyplot as plt
 from graspologic.utils import ptr
 from graspologic.plot import heatmap
 
+
 class GraphTools:
     """Initializes the graph with nodes corresponding to the number of ROIS
 
@@ -75,8 +76,8 @@ class GraphTools:
     ):
 
         self.edge_dict = defaultdict(int)
-        #self.roi_file = rois
-        #self.roi_img = nib.load(self.roi_file)
+        # self.roi_file = rois
+        # self.roi_img = nib.load(self.roi_file)
         self.rois = nib.load(rois)
         self.rois = self.rois.get_data().astype("int")
         # self.n_ids = self.rois[self.rois > 0]
@@ -308,4 +309,3 @@ class GraphTools:
         """
         print("\nGraph Summary:")
         print(nx.info(self.g))
-

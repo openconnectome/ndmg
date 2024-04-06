@@ -68,13 +68,13 @@ def s3_client(service="s3"):
 def parse_path(s3_datapath):
     """
     Return bucket and prefix from full s3 path.
-    
+
     Parameters
     ----------
     s3_datapath : str
-        path to a bucket. 
+        path to a bucket.
         Should be of the form s3://bucket/prefix/.
-    
+
     Returns
     -------
     tuple
@@ -117,7 +117,9 @@ def get_matching_s3_objects(bucket, prefix="", suffix=""):
         try:
             contents = resp["Contents"]
         except KeyError:
-            print("No contents found. Check that both the path to your files on your s3 bucket and your aws credentials are correct.")
+            print(
+                "No contents found. Check that both the path to your files on your s3 bucket and your aws credentials are correct."
+            )
             return
 
         for obj in contents:

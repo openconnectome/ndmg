@@ -150,7 +150,7 @@ class RunTrack:
         mod_func : str
             Diffusion model: csd or csa
         qa_tensor: str
-            path to store the qa for tensor/directions of model 
+            path to store the qa for tensor/directions of model
         seeds : ndarray
             ndarray of seeds for tractography
         stream_affine : ndarray
