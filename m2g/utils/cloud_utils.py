@@ -5,10 +5,11 @@ m2g.utils.cloud_utils
 Contains utility functions for working on the cloud with AWS.
 """
 
-# standard library imports
-from configparser import ConfigParser
 import os
 import sys
+
+# standard library imports
+from configparser import ConfigParser
 
 # package imports
 import boto3

@@ -9,26 +9,25 @@ Used for the majority of the registration described here: https://neurodata.io/t
 
 # standard library imports
 import os
-from argparse import ArgumentParser
 import subprocess
+from argparse import ArgumentParser
 from pathlib import Path
 
 # package imports
 import nibabel as nib
 import numpy as np
-from nilearn.image import load_img
-from nilearn.image import math_img
-from dipy.tracking.streamline import deform_streamlines
 from dipy.io.streamline import load_trk
 from dipy.tracking import utils
+from dipy.tracking.streamline import deform_streamlines
+from nilearn.image import load_img, math_img
+
+from m2g.scripts import m2g_bids
+from m2g.stats.qa_fast import qa_fast_png
+from m2g.stats.qa_reg import reg_mri_pngs
+from m2g.stats.qa_skullstrip import gen_overlay_pngs
 
 # m2g imports
-from m2g.utils import gen_utils
-from m2g.utils import reg_utils
-from m2g.scripts import m2g_bids
-from m2g.stats.qa_skullstrip import gen_overlay_pngs
-from m2g.stats.qa_reg import reg_mri_pngs
-from m2g.stats.qa_fast import qa_fast_png
+from m2g.utils import gen_utils, reg_utils
 
 
 @gen_utils.timer

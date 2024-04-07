@@ -12,15 +12,16 @@ for models used during the tractrography step.
 import warnings
 
 warnings.simplefilter("ignore")
-from argparse import ArgumentParser
-from scipy import ndimage
-import numpy as np
-import nibabel as nb
-import matplotlib
 import itertools
+from argparse import ArgumentParser
 
-from dipy.viz import window, actor
+import matplotlib
+import nibabel as nb
+import numpy as np
+from dipy.viz import actor, window
 from fury.actor import orient2rgb
+from scipy import ndimage
+
 from m2g.utils import qa_utils
 
 matplotlib.use("Agg")  # very important above pyplot import

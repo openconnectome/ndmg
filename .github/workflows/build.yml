@@ -1,0 +1,48 @@
+name: m2g Build
+on:
+  push:
+    branches-ignore:
+      - "deploy"
+      - "main"
+  pull_request:
+  workflow_call:
+jobs:
+  build-reference-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+      - name: "Run Reference Documentation Generation"
+        run: |
+          sudo apt install pandoc
+          pip install -U pip setuptools wheel
+          pip install -r docs/requirements.txt
+          sphinx-build -a docs/ docs/_build/html
+      - name: Archive documentation version artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependencies
+          path: |
+            dependencies_documentation.txt
+      - name: Archive documentation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-site
+          path: |
+            docs/_build/html
+  code-format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+      - name: Run Format Check
+        run: |
+          pip install -U pip setuptools wheel black isort
+          black --check --diff ./m2g
+          isort --check-only --profile black ./m2g

@@ -13,18 +13,20 @@ warnings.simplefilter("ignore")
 import os
 import re
 import sys
-import numpy as np
+from argparse import ArgumentParser
+
+import matplotlib as mpl
 import nibabel as nb
+import numpy as np
+from matplotlib.colors import LinearSegmentedColormap
+from scipy import ndimage
+
 from m2g.utils.gen_utils import get_braindata, get_filename
 from m2g.utils.qa_utils import get_min_max, opaque_colorscale, pad_im
-from argparse import ArgumentParser
-from scipy import ndimage
-from matplotlib.colors import LinearSegmentedColormap
-import matplotlib as mpl
 
 mpl.use("Agg")  # very important above pyplot import
-from nilearn.plotting.edge_detect import _edge_map as edge_map
 import matplotlib.pyplot as plt
+from nilearn.plotting.edge_detect import _edge_map as edge_map
 
 
 def reg_mri_pngs(

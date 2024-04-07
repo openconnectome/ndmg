@@ -8,23 +8,22 @@ Contains functionality for running m2g in batch on AWS.
 For a tutorial on setting this up, see here : https://github.com/neurodata/m2g/blob/deploy/tutorials/Batch.ipynb
 """
 
+import json
+import os
+import re
+
 # standard library imports
 import subprocess
-import re
-import os
 import sys
-import json
-from copy import deepcopy
-from collections import OrderedDict
 from argparse import ArgumentParser
+from collections import OrderedDict
+from copy import deepcopy
 from pathlib import Path
 
 # m2g imports
 import m2g
 from m2g.utils import gen_utils
-from m2g.utils.cloud_utils import get_credentials
-from m2g.utils.cloud_utils import get_matching_s3_objects
-from m2g.utils.cloud_utils import s3_client
+from m2g.utils.cloud_utils import get_credentials, get_matching_s3_objects, s3_client
 
 
 def batch_submit(

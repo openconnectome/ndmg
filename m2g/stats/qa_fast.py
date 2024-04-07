@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import nibabel as nb
-from scipy import ndimage
+import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
+from scipy import ndimage
+
 from m2g.utils.qa_utils import pad_im
 
 

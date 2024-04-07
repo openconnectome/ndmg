@@ -1,12 +1,12 @@
-import nibabel as nib
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 
-from fury import actor, window, colormap, ui
+import matplotlib.pyplot as plt
+import nibabel as nib
+import numpy as np
 from dipy.tracking.streamline import Streamlines
-from PIL import Image
+from fury import actor, colormap, ui, window
 from matplotlib.colors import LinearSegmentedColormap
+from PIL import Image
 
 
 def combine_plot(qa_out_path, brain_path):
