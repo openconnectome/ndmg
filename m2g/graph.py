@@ -9,28 +9,29 @@ Used in the final stage of the pipeline.
 """
 
 
+import csv
 # standard library imports
 import os
 import time
-import csv
-from itertools import combinations
-from functools import reduce
 from collections import defaultdict
+from functools import reduce
+from itertools import combinations
 from pathlib import Path
 
-# package imports
-import numpy as np
+import matplotlib
 import networkx as nx
 import nibabel as nib
+# package imports
+import numpy as np
 from dipy.tracking._utils import _mapping_to_voxel, _to_voxel_coordinates
-from m2g.utils.gen_utils import timer
-import matplotlib
 from joblib import Parallel, delayed
 
+from m2g.utils.gen_utils import timer
+
 matplotlib.use("agg")
-from matplotlib import pyplot as plt
-from graspologic.utils import ptr
 from graspologic.plot import heatmap
+from graspologic.utils import ptr
+from matplotlib import pyplot as plt
 
 
 class GraphTools:

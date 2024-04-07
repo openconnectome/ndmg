@@ -11,17 +11,14 @@ import subprocess
 
 # package imports
 import nibabel as nib
-import numpy as np
 import nilearn.image as nl
-
-from dipy.align.imaffine import MutualInformationMetric
-from dipy.align.imaffine import AffineRegistration
-from dipy.align.imaffine import transform_origins
-from dipy.align.transforms import TranslationTransform3D
-from dipy.align.transforms import RigidTransform3D
-from dipy.align.transforms import AffineTransform3D
+import numpy as np
+from dipy.align.imaffine import (AffineRegistration, MutualInformationMetric,
+                                 transform_origins)
 from dipy.align.imwarp import SymmetricDiffeomorphicRegistration
 from dipy.align.metrics import CCMetric
+from dipy.align.transforms import (AffineTransform3D, RigidTransform3D,
+                                   TranslationTransform3D)
 from dipy.viz import regtools
 
 # m2g imports

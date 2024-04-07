@@ -8,9 +8,10 @@ Contains functionality for normalizing b-vectors.
 TODO : depracate or change name. Add other preprocessing functions created from m2g_dwi_pipeline.
 """
 
+import subprocess
+
 # package imports
 import numpy as np
-import subprocess
 
 # m2g imports
 from m2g.utils import gen_utils

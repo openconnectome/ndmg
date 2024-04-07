@@ -11,28 +11,26 @@ Theory described here: https://neurodata.io/talks/ndmg.pdf#page=21
 # system imports
 import os
 
+import nibabel as nib
 # external package imports
 import numpy as np
-import nibabel as nib
-
+from dipy.data import get_sphere
+from dipy.direction import ProbabilisticDirectionGetter, peaks_from_model
+from dipy.reconst.csdeconv import (ConstrainedSphericalDeconvModel,
+                                   recursive_response)
+from dipy.reconst.dti import TensorModel, fractional_anisotropy, quantize_evecs
+from dipy.reconst.shm import CsaOdfModel
+from dipy.tracking import utils
+from dipy.tracking.local_tracking import (LocalTracking,
+                                          ParticleFilteringTracking)
+from dipy.tracking.stopping_criterion import (ActStoppingCriterion,
+                                              BinaryStoppingCriterion,
+                                              CmcStoppingCriterion)
 # dipy imports
 from dipy.tracking.streamline import Streamlines
-from dipy.tracking import utils
-from dipy.tracking.local_tracking import LocalTracking
-from dipy.tracking.local_tracking import ParticleFilteringTracking
-from dipy.tracking.stopping_criterion import BinaryStoppingCriterion
-from dipy.tracking.stopping_criterion import ActStoppingCriterion
-from dipy.tracking.stopping_criterion import CmcStoppingCriterion
-
-from dipy.reconst.dti import fractional_anisotropy, TensorModel, quantize_evecs
-from dipy.reconst.shm import CsaOdfModel
-from dipy.reconst.csdeconv import ConstrainedSphericalDeconvModel, recursive_response
-
-from dipy.data import get_sphere
-from dipy.direction import peaks_from_model, ProbabilisticDirectionGetter
-from m2g.utils.gen_utils import timer
 
 from m2g.stats import qa_tensor
+from m2g.utils.gen_utils import timer
 
 
 def build_seed_list(mask_img_file, stream_affine, dens):

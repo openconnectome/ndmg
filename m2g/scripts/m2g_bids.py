@@ -12,25 +12,23 @@ In this module, m2g:
 """
 
 
-# standard library imports
-import sys
-import shutil
 import glob
 import os
+import re
+import shutil
+# standard library imports
+import sys
 from argparse import ArgumentParser
+
 import numpy as np
 from numpy import genfromtxt
-import re
 
-# m2g imports
-from m2g.utils import cloud_utils
-from m2g.utils import gen_utils
-from m2g.utils.gen_utils import DirectorySweeper
-from m2g.utils.gen_utils import check_dependencies
-from m2g.utils.gen_utils import is_bids
-from m2g.utils.gen_utils import as_directory
+from m2g.functional.m2g_func import func_dir_reorg, m2g_func_worker
 from m2g.scripts.m2g_dwi_pipeline import m2g_dwi_worker
-from m2g.functional.m2g_func import m2g_func_worker, func_dir_reorg
+# m2g imports
+from m2g.utils import cloud_utils, gen_utils
+from m2g.utils.gen_utils import (DirectorySweeper, as_directory,
+                                 check_dependencies, is_bids)
 
 
 def get_atlas(atlas_dir, vox_size):

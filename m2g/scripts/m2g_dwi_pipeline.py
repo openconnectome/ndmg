@@ -8,33 +8,27 @@ For a full description, see here: https://neurodata.io/talks/ndmg.pdf
 """
 
 
+# multithreading
+import multiprocessing as mp
+import os
 # standard library imports
 import shutil
 import time
-from datetime import datetime
-import os
-from pathlib import Path
 from argparse import ArgumentParser
+from datetime import datetime
+from pathlib import Path
+from subprocess import Popen
 
 # package imports
 import nibabel as nib
 import numpy as np
-from subprocess import Popen
-from dipy.tracking.streamline import Streamlines
 from dipy.io import read_bvals_bvecs
+from dipy.tracking.streamline import Streamlines
 
 # m2g imports
-from m2g import preproc
-from m2g import register
-from m2g import track
-from m2g import graph
-from m2g.utils import gen_utils
-from m2g.utils import reg_utils
-from m2g.utils import cloud_utils
+from m2g import graph, preproc, register, track
 from m2g.stats.qa_tractography import qa_tractography
-
-# multithreading
-import multiprocessing as mp
+from m2g.utils import cloud_utils, gen_utils, reg_utils
 
 # TODO : not sure why this is here, potentially remove
 os.environ["MPLCONFIGDIR"] = "/tmp/"

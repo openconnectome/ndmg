@@ -1,11 +1,13 @@
-import subprocess
-import yaml
 import os
-import regex as re
-from m2g.utils.gen_utils import run
-import sys
 import shutil
+import subprocess
+import sys
+
 import numpy as np
+import regex as re
+import yaml
+
+from m2g.utils.gen_utils import run
 
 
 def make_dataconfig(input_dir, sub, ses, anat, func, acquisition="alt+z", tr=2.0):

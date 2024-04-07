@@ -7,31 +7,29 @@ m2g.utils.gen_utils
 Contains general utility functions.
 """
 
-# system imports
-import os
-import shutil
-import sys
-import re
-import subprocess
-import time
 import functools
 import json
-from pathlib import Path
+# system imports
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
 from collections import namedtuple
+from pathlib import Path
 
 # package imports
 import bids
-import numpy as np
+import dipy
 import nibabel as nib
+import numpy as np
+from dipy.align.reslice import reslice
+from dipy.core.gradients import gradient_table
+from dipy.io import read_bvals_bvecs
+from fury import actor, window
 from nilearn.image import mean_img
 from scipy.sparse import lil_matrix
-from fury import actor
-from fury import window
-
-import dipy
-from dipy.io import read_bvals_bvecs
-from dipy.core.gradients import gradient_table
-from dipy.align.reslice import reslice
 
 
 class DirectorySweeper:
