@@ -32,7 +32,6 @@ from m2g.utils.gen_utils import get_braindata, get_filename
 from m2g.utils.qa_utils import get_min_max, opaque_colorscale, pad_im
 
 
-
 def gen_overlay_pngs(
     brain, original, outdir, loc=0, mean=False, minthr=2, maxthr=95, edge=False
 ):
