@@ -36,7 +36,6 @@ from graspologic.utils import ptr
 from matplotlib import pyplot as plt
 
 
-
 class GraphTools:
     """Initializes the graph with nodes corresponding to the number of ROIS
 
