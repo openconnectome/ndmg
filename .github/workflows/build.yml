@@ -37,6 +37,7 @@ jobs:
   # Deployment job
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: "GitHub Pages action"
         uses: peaceiris/actions-gh-pages@v3
