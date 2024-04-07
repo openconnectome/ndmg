@@ -16,6 +16,7 @@ import glob
 import os
 import re
 import shutil
+
 # standard library imports
 import sys
 from argparse import ArgumentParser
@@ -25,10 +26,15 @@ from numpy import genfromtxt
 
 from m2g.functional.m2g_func import func_dir_reorg, m2g_func_worker
 from m2g.scripts.m2g_dwi_pipeline import m2g_dwi_worker
+
 # m2g imports
 from m2g.utils import cloud_utils, gen_utils
-from m2g.utils.gen_utils import (DirectorySweeper, as_directory,
-                                 check_dependencies, is_bids)
+from m2g.utils.gen_utils import (
+    DirectorySweeper,
+    as_directory,
+    check_dependencies,
+    is_bids,
+)
 
 
 def get_atlas(atlas_dir, vox_size):

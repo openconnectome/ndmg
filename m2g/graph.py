@@ -10,6 +10,7 @@ Used in the final stage of the pipeline.
 
 
 import csv
+
 # standard library imports
 import os
 import time
@@ -21,6 +22,7 @@ from pathlib import Path
 import matplotlib
 import networkx as nx
 import nibabel as nib
+
 # package imports
 import numpy as np
 from dipy.tracking._utils import _mapping_to_voxel, _to_voxel_coordinates

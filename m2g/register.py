@@ -25,6 +25,7 @@ from m2g.scripts import m2g_bids
 from m2g.stats.qa_fast import qa_fast_png
 from m2g.stats.qa_reg import reg_mri_pngs
 from m2g.stats.qa_skullstrip import gen_overlay_pngs
+
 # m2g imports
 from m2g.utils import gen_utils, reg_utils
 

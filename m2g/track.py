@@ -12,20 +12,22 @@ Theory described here: https://neurodata.io/talks/ndmg.pdf#page=21
 import os
 
 import nibabel as nib
+
 # external package imports
 import numpy as np
 from dipy.data import get_sphere
 from dipy.direction import ProbabilisticDirectionGetter, peaks_from_model
-from dipy.reconst.csdeconv import (ConstrainedSphericalDeconvModel,
-                                   recursive_response)
+from dipy.reconst.csdeconv import ConstrainedSphericalDeconvModel, recursive_response
 from dipy.reconst.dti import TensorModel, fractional_anisotropy, quantize_evecs
 from dipy.reconst.shm import CsaOdfModel
 from dipy.tracking import utils
-from dipy.tracking.local_tracking import (LocalTracking,
-                                          ParticleFilteringTracking)
-from dipy.tracking.stopping_criterion import (ActStoppingCriterion,
-                                              BinaryStoppingCriterion,
-                                              CmcStoppingCriterion)
+from dipy.tracking.local_tracking import LocalTracking, ParticleFilteringTracking
+from dipy.tracking.stopping_criterion import (
+    ActStoppingCriterion,
+    BinaryStoppingCriterion,
+    CmcStoppingCriterion,
+)
+
 # dipy imports
 from dipy.tracking.streamline import Streamlines
 

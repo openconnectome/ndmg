@@ -11,6 +11,7 @@ For a tutorial on setting this up, see here : https://github.com/neurodata/m2g/b
 import json
 import os
 import re
+
 # standard library imports
 import subprocess
 import sys
@@ -22,8 +23,7 @@ from pathlib import Path
 # m2g imports
 import m2g
 from m2g.utils import gen_utils
-from m2g.utils.cloud_utils import (get_credentials, get_matching_s3_objects,
-                                   s3_client)
+from m2g.utils.cloud_utils import get_credentials, get_matching_s3_objects, s3_client
 
 
 def batch_submit(

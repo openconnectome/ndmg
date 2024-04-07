@@ -7,6 +7,7 @@ Contains utility functions for working on the cloud with AWS.
 
 import os
 import sys
+
 # standard library imports
 from configparser import ConfigParser
 
