@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diffusion Pipeline &mdash; m2g 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c02300dd"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Functional Pipeline" href="functional.html" />
+    <link rel="prev" title="Function Reference" href="../tutorials/funcref.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            m2g
+          </a>
+              <div class="version">
+                0.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/install.html#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/install.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/install.html#installation-guide">Installation Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/install.html#docker">Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/install.html#pip">Pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/install.html#github">Github</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/funcref.html">Function Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pipeline Overview</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Diffusion Pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#output-summary-table">Output Summary Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output-subject-level-pipeline-summary">Output subject-level pipeline summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#registration">Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tensor-estimation">Tensor Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tractography">Tractography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#graph-estimation">Graph Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="functional.html">Functional Pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functional.html#output-summary-table">Output Summary Table</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="http://www.github.com/neurodata/m2g/">m2g &#64; GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/m2g/">m2g &#64; PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/neurodata/m2g/issues">Issue Tracker</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">m2g</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Diffusion Pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pipeline/diffusion.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="diffusion-pipeline">
+<h1><a class="toc-backref" href="#id5" role="doc-backlink">Diffusion Pipeline</a><a class="headerlink" href="#diffusion-pipeline" title="Permalink to this heading">¶</a></h1>
+<nav class="contents" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#diffusion-pipeline" id="id5">Diffusion Pipeline</a></p>
+<ul>
+<li><p><a class="reference internal" href="#output-summary-table" id="id6">Output Summary Table</a></p></li>
+<li><p><a class="reference internal" href="#output-subject-level-pipeline-summary" id="id7">Output subject-level pipeline summary</a></p></li>
+<li><p><a class="reference internal" href="#registration" id="id8">Registration</a></p></li>
+<li><p><a class="reference internal" href="#tensor-estimation" id="id9">Tensor Estimation</a></p></li>
+<li><p><a class="reference internal" href="#tractography" id="id10">Tractography</a></p></li>
+<li><p><a class="reference internal" href="#graph-estimation" id="id11">Graph Estimation</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>Here we take a deep-dive into the modules of the <cite>NDMG-d</cite> pipeline. We will explain algorithm and parameter choices that were implemented at each step and the justification for why they were used over alternatives.</p>
+<section id="output-summary-table">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Output Summary Table</a><a class="headerlink" href="#output-summary-table" title="Permalink to this heading">¶</a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text"><cite>NDMG-d</cite> <strong>IO Breakdown</strong>. Below, we look at the inputs, outputs, and QA figures produced by <cite>NDMG-d</cite>.</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 13.3%" />
+<col style="width: 6.7%" />
+<col style="width: 13.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Inputs</p></th>
+<th class="head"><p>Outputs</p></th>
+<th class="head"><p>QA figures</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Registration</p></td>
+<td><p>raw dMRI, raw T1w, template</p></td>
+<td><p>aligned dMRI</p></td>
+<td><p>Figure S2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tensor Estimation</p></td>
+<td><p>aligned dMRI</p></td>
+<td><p>tensor field</p></td>
+<td><p>Figure S3</p></td>
+</tr>
+<tr class="row-even"><td><p>Tractography</p></td>
+<td><p>tensor field</p></td>
+<td><p>fiber tracts</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Graph Generation</p></td>
+<td><p>fiber tracts, parcellations</p></td>
+<td><p>connectome</p></td>
+<td><p>Figure S4</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="output-subject-level-pipeline-summary">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Output subject-level pipeline summary</a><a class="headerlink" href="#output-subject-level-pipeline-summary" title="Permalink to this heading">¶</a></h2>
+<figure class="align-left" id="id2" style="width: 700px">
+<img alt="../_images/ndmg-d-detailed-pipeline.jpg" src="../_images/ndmg-d-detailed-pipeline.jpg" />
+<figcaption>
+<p><span class="caption-text">Figure S1: <cite>NDMG-d</cite> <strong>detailed pipeline</strong>. The <cite>NDMG-d</cite> pipeline consists of 4 main steps: Registration (<strong>D1</strong>), Tensor Estimation (<strong>D2</strong>), Tractography (<strong>D3</strong>), and Graph Generation (<strong>D4</strong>). Each of these sections leverages publicely available tools and data to robustly produce the desired derivative of each step. Alongside derivative production, <cite>NDMG</cite> produces QA figures at each stage, as can be seen in <strong>D1-4</strong>, that enable qualitative evaluation of the pipeline’s performance.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="registration">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Registration</a><a class="headerlink" href="#registration" title="Permalink to this heading">¶</a></h2>
+<p>Registration in <cite>NDMG</cite> leverages FSL and the Nilearn Python package. <cite>NDMG</cite> uses linear registrations because non-linear methods had higher variability across studies and increased the time requirements of the pipeline dramatically.</p>
+<p>The first step in the registration module is eddy-current correction and dMRI self-alignment to the volume-stack’s BO volume (Figure S1). <cite>NDMG</cite> uses FSL’s <code class="docutils literal notranslate"><span class="pre">eddy_correct</span></code>, rather than the newer <code class="docutils literal notranslate"><span class="pre">eddy</span></code> function, because <code class="docutils literal notranslate"><span class="pre">eddy</span></code> requires substantially longer to run or relies on GPY acceleration, which would reduce the accessibility of <cite>NDMG</cite>. Once the dMRI data is self-aligned, it is aligned to the same-individual T1w image through FSL’s <code class="docutils literal notranslate"><span class="pre">epi_reg</span></code> mini-pipeline. This tool performs a linear alignment between each image in the dMRI volume-stack and the T1w volume. The T1w volume is then aligned to the MNI152 template using linear registration computed by FSL’s <code class="docutils literal notranslate"><span class="pre">flirt</span></code>. This alignment is computed using the 1 millimeter (mm) MNI152 atlas, to enable higher freedom in terms of the parcellations that may be used, such as near-voxelwise parcellations that have been generated at 1 mm. FSL’s non-linear registration, <code class="docutils literal notranslate"><span class="pre">fnirt</span></code>, is not used in <cite>NDMG</cite> as the performance was found to vary significantly based on the collection protocol of the T1w images, often resulting in either slightly improved or significantly deteriorated performance.</p>
+<p>The transform mapping the T1w volume to the template is then applied to the dMRI image stack, resulting in the dMRI image being aligned to the MNI152 template in stereotaxic-coordinate space. However, while <code class="docutils literal notranslate"><span class="pre">flirt</span></code> aligns the images in stereotaxic space, it does not guarantee an overlap of the data in voxelspace. Uisng Nilearn’s <code class="docutils literal notranslate"><span class="pre">resample</span></code>, <cite>NDMG</cite> ensures that images are aligned in both voxel- and stereotaxic-coordinates so that all analyses can be performed equivalently either with or without considering the image affine-transforms mapping the data matrix to the real-world coordinates.</p>
+<p>Finally, <cite>NDMG</cite> produces a QA plot showing three slices of the first BO volume of the aligned dMRI image overlaid on the MNI152 template in the three principle coordinate planes (Figure S2).</p>
+<figure class="align-left" id="id3" style="width: 700px">
+<img alt="../_images/registration-qa.png" src="../_images/registration-qa.png" />
+<figcaption>
+<p><span class="caption-text">Figure S2: <cite>NDMG-d</cite> <strong>Registration QA</strong>. <cite>NDMG-d</cite> produces registration QA showing the zeroth slice of the dMRI sequence in green overlaid on the template brain in purple.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="tensor-estimation">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Tensor Estimation</a><a class="headerlink" href="#tensor-estimation" title="Permalink to this heading">¶</a></h2>
+<p>Once the dMRI volumes have been aligned to the template, <cite>NDMG</cite> begins diffusion-specific processing on the data. All diffusion processing in <cite>NDMG</cite> is performed using the DiPy Python package. The diffusion processing in <cite>NDMG</cite> is performed after alignment to ease cross-connectome comparisons.</p>
+<p>While high-dimensional diffusion models, such as orientation distribution functions (ODFs) or q-ball, enable reconstruction of crossing fibers and complex fiber trajectories, these methods are designed for images with a large number of diffusion volumes/directions for a given image. Because <cite>NDMG</cite> is designed to be robust across a wide range of dMRI studies, including diffusion tensor imaging, <cite>NDMG</cite> uses a lower-dimensional tensor model. The model, described in detail on <a class="reference external" href="http://nipy.org/dipy/examples_built/reconst_dti.html">DiPy</a>’s website, computes a 6-component tensor for each voxel in the image. This reduces the dMRI image stack to a single 6-dimensional image that can be used for tractography. <cite>NDMG</cite> generates a QA plot showing slices of the FA map derived from the tensors in nine panels, as below (Figure S3)</p>
+<figure class="align-left" id="id4" style="width: 700px">
+<img alt="../_images/tensor-qa.png" src="../_images/tensor-qa.png" />
+<figcaption>
+<p><span class="caption-text">Figure S3: <cite>NDMG-d</cite> <strong>Tensor Estimation QA</strong>. <cite>NDMG-d</cite> produces tensor QA showing the voxelwise deterministic tensor model fit to the aligned dMRI sequence.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="tractography">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Tractography</a><a class="headerlink" href="#tractography" title="Permalink to this heading">¶</a></h2>
+<p><cite>NDMG</cite> uses DiPy’s deterministic tractography algorithm, <code class="docutils literal notranslate"><span class="pre">EuDX</span></code>. Integration of tensor estimation and tractography methods is minimally complex with this tractography method, as it has been designed to operate on the tensors produced by DiPy in the previous step. Probabilistic tractography would be significantly more computationally expensive, and it remains unclear how well it would perform on data with a small number of diffusion directions. The QA figure for tractography shows a subset of the resolved streamlines in an axial projection of the brain mask with the fibers contained therein (Figure S4). This QA figure allows the user to verify, for example, that streamlines are following expected patterns within the brain and do not leave the boundary of the mask.</p>
+</section>
+<section id="graph-estimation">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Graph Estimation</a><a class="headerlink" href="#graph-estimation" title="Permalink to this heading">¶</a></h2>
+<p><cite>NDMG</cite> uses the fiber streamlines to generate connectomes across multiple parcellations. Graphs are formed by contracting voxels into graph vertices depending on spatial, anatomical, or functional similarity. Given a parcellation with vertices <span class="math notranslate nohighlight">\(V\)</span> and a corresponding mapping <span class="math notranslate nohighlight">\(P(v_i)\)</span> indicating the voxels within a region <span class="math notranslate nohighlight">\(i\)</span>, we contract our fiber streamlines as follows. To form a graph <span class="math notranslate nohighlight">\(G(V, E, w)\)</span>, we know that <span class="math notranslate nohighlight">\(V = \left\{v_i\right\}_{i=1}^N\)</span> is the set of all unique vertices in our parcellation. <span class="math notranslate nohighlight">\(E = V \times V\)</span> is a collection of possible edges between different vertex regions. <span class="math notranslate nohighlight">\(w : V \times V \to \mathbb{Z}_+\)</span> is a weighting function for each edge in the graph. Here, <span class="math notranslate nohighlight">\(w(v_i,v_j) = \sum_{w \in P(v_j)}{\sum_{w \in P(v_i)}\mathbb{i}\left\{F_{u,w}\right\}}\)</span> where <span class="math notranslate nohighlight">\(F_{u,w}\)</span> is true if a fiber tract exists between voxels <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(w\)</span>, and false if there is no fiber tract between voxels <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(w\)</span>.</p>
+<p>The connectomes generated are graph objects, with nodes in the graph representing regions of interest (ROIs) and edges representing connectivity via fibers. An undirected edge is added to the graph for each pair of ROIs a given streamline passes through. Edges are undirected because dMRI data lacks direction information. Edge weight is the number of streamlines which pass through a given pair of regions. <cite>NDMG</cite> uses 24 parcellations, including all standard public dMRI parcellations known by the authors. Users may run <cite>NDMG</cite> using any additional parcellation defined in MNI152 space simply by providing access to it on the command-line. To package an additional parcellation with <cite>NDMG</cite>, please contact the maintainers. The QA for graph generation depicts a number of graph statistics for each of the parcellation schemes. We typically generate this figure at the population level, as depicted in Figure S4.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

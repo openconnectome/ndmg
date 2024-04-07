@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Install &mdash; m2g 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c02300dd"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Function Reference" href="funcref.html" />
+    <link rel="prev" title="m2g" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            m2g
+          </a>
+              <div class="version">
+                0.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-guide">Installation Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker">Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pip">Pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#github">Github</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="funcref.html">Function Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pipeline Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline/diffusion.html">Diffusion Pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/diffusion.html#output-summary-table">Output Summary Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/diffusion.html#output-subject-level-pipeline-summary">Output subject-level pipeline summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/diffusion.html#registration">Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/diffusion.html#tensor-estimation">Tensor Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/diffusion.html#tractography">Tractography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/diffusion.html#graph-estimation">Graph Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline/functional.html">Functional Pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/functional.html#output-summary-table">Output Summary Table</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="http://www.github.com/neurodata/m2g/">m2g &#64; GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/m2g/">m2g &#64; PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/neurodata/m2g/issues">Issue Tracker</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">m2g</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Install</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/install.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="install">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink">Install</a><a class="headerlink" href="#install" title="Permalink to this heading">¶</a></h1>
+<nav class="contents" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#install" id="id1">Install</a></p>
+<ul>
+<li><p><a class="reference internal" href="#summary" id="id2">Summary</a></p></li>
+<li><p><a class="reference internal" href="#system-requirements" id="id3">System Requirements</a></p></li>
+<li><p><a class="reference internal" href="#installation-guide" id="id4">Installation Guide</a></p>
+<ul>
+<li><p><a class="reference internal" href="#docker" id="id5">Docker</a></p></li>
+<li><p><a class="reference internal" href="#pip" id="id6">Pip</a></p></li>
+<li><p><a class="reference internal" href="#github" id="id7">Github</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="summary">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">¶</a></h2>
+<p>Pull docker container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">neurodata</span><span class="o">/</span><span class="n">m2g</span>
+</pre></div>
+</div>
+<p>Run dmri participant pipeline:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">data</span><span class="p">:</span><span class="o">/</span><span class="n">data</span> <span class="n">neurodata</span><span class="o">/</span><span class="n">m2g</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">outputs</span>
+</pre></div>
+</div>
+</section>
+<section id="system-requirements">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">System Requirements</a><a class="headerlink" href="#system-requirements" title="Permalink to this heading">¶</a></h2>
+<p>The m2g pipeline was developed and tested primarily on Mac OSX, Ubuntu (12, 14, 16, 18), and CentOS (5, 6);</p>
+<p>Made to work on Python 3.6;</p>
+<p>Is wrapped in a Docker container;</p>
+<p>Has install instructions via a Dockerfile;</p>
+<p>Requires no non-standard hardware to run;</p>
+<p>Has key features built upon FSL, Dipy, Nibabel, Nilearn, Networkx, Numpy, Scipy, Scikit-Learn, and others;</p>
+<p>Takes approximately 1-core, 8-GB of RAM, and 1 hour to run for most datasets.</p>
+<p>While m2g is quite robust to Python package versions (with only few exceptions, mentioned in the installation guide), an example of possible versions (taken from the m2g Docker Image with version v0.2.0) is shown below. Note: this list excludes many libraries which are standard with a Python distribution, and a complete list with all packages and versions can be produced by running pip freeze within the Docker container mentioned above.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awscli</span><span class="o">==</span><span class="mf">1.16.210</span> <span class="p">,</span> <span class="n">boto3</span><span class="o">==</span><span class="mf">1.9.200</span> <span class="p">,</span> <span class="n">botocore</span><span class="o">==</span><span class="mf">1.12.200</span> <span class="p">,</span> <span class="n">colorama</span><span class="o">==</span><span class="mf">0.3.9</span> <span class="p">,</span> <span class="n">configparser</span><span class="o">&gt;=</span><span class="mf">3.7.4</span> <span class="p">,</span>
+<span class="n">Cython</span><span class="o">==</span><span class="mf">0.29.13</span> <span class="p">,</span> <span class="n">dipy</span><span class="o">==</span><span class="mf">0.16.0</span> <span class="p">,</span> <span class="n">duecredit</span><span class="o">==</span><span class="mf">0.7.0</span> <span class="p">,</span> <span class="n">fury</span><span class="o">==</span><span class="mf">0.3.0</span> <span class="p">,</span> <span class="n">graspy</span><span class="o">==</span><span class="mf">0.0.3</span> <span class="p">,</span> <span class="n">ipython</span><span class="o">==</span><span class="mf">7.7.0</span> <span class="p">,</span>
+<span class="n">matplotlib</span><span class="o">==</span><span class="mf">3.1.1</span> <span class="p">,</span> <span class="n">networkx</span><span class="o">==</span><span class="mf">2.3</span> <span class="p">,</span> <span class="n">nibabel</span><span class="o">==</span><span class="mf">2.5.0</span> <span class="p">,</span> <span class="n">nilearn</span><span class="o">==</span><span class="mf">0.5.2</span> <span class="p">,</span> <span class="n">numpy</span><span class="o">==</span><span class="mf">1.17.0</span> <span class="p">,</span> <span class="n">pandas</span><span class="o">==</span><span class="mf">0.25.0</span><span class="p">,</span>
+<span class="n">Pillow</span><span class="o">==</span><span class="mf">6.1.0</span> <span class="p">,</span> <span class="n">plotly</span><span class="o">==</span><span class="mf">1.12.9</span><span class="p">,</span> <span class="n">pybids</span><span class="o">==</span><span class="mf">0.6.4</span> <span class="p">,</span> <span class="n">python</span><span class="o">-</span><span class="n">dateutil</span><span class="o">==</span><span class="mf">2.8.0</span> <span class="p">,</span> <span class="n">PyVTK</span><span class="o">==</span><span class="mf">0.5.18</span> <span class="p">,</span>
+<span class="n">requests</span><span class="o">==</span><span class="mf">2.22.0</span> <span class="p">,</span> <span class="n">s3transfer</span><span class="o">==</span><span class="mf">0.2.1</span> <span class="p">,</span> <span class="n">setuptools</span><span class="o">&gt;=</span><span class="mf">40.0</span> <span class="n">scikit</span><span class="o">-</span><span class="n">image</span><span class="o">==</span><span class="mf">0.13.0</span> <span class="p">,</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">==</span><span class="mf">0.21.3</span> <span class="p">,</span>
+<span class="n">scipy</span><span class="o">==</span><span class="mf">1.3.0</span> <span class="p">,</span> <span class="n">sklearn</span><span class="o">==</span><span class="mf">8.0</span> <span class="p">,</span> <span class="n">vtk</span><span class="o">==</span><span class="mf">8.1.2</span>
+</pre></div>
+</div>
+</section>
+<section id="installation-guide">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Installation Guide</a><a class="headerlink" href="#installation-guide" title="Permalink to this heading">¶</a></h2>
+<p>Currently, the Docker image is recommended.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span></code> and Github installations are also available.</p>
+<section id="docker">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Docker</a><a class="headerlink" href="#docker" title="Permalink to this heading">¶</a></h3>
+<p>The neurodata/m3r-release Docker container enables users to run end-to-end connectome estimation on structural MRI or functional MRI right from container launch. The pipeline requires that data be organized in accordance with the BIDS spec. If the data you wish to process is available on S3 you simply need to provide your s3 credentials at build time and the pipeline will auto-retrieve your data for processing.</p>
+<p>If you have never used Docker before, it is useful to run through the Docker <a class="reference external" href="https://docs.docker.com/">documentation</a>.</p>
+<p><strong>Getting Docker container</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker pull neurodata/m2g
+</pre></div>
+</div>
+<p><em>(A) I do not wish to use S3:</em></p>
+<p>You are good to go!</p>
+<p><em>(B) I wish to use S3:</em></p>
+<p>Add your secret key/access id to a file called credentials.csv in this directory on your local machine. A dummy file has been provided to make the format we expect clear. (This is how AWS provides credentials)</p>
+<p><strong>Processing Data</strong></p>
+<p>Below is the help output generated by running <strong>m2g</strong> with the <code class="docutils literal notranslate"><span class="pre">-h</span></code> command. All parameters are explained in this output.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run -ti neurodata/m2g -h
+
+usage: m2g_bids [-h]
+             [--participant_label PARTICIPANT_LABEL [PARTICIPANT_LABEL ...]]
+             [--session_label SESSION_LABEL [SESSION_LABEL ...]]
+             [--run_label RUN_LABEL [RUN_LABEL ...]] [--bucket BUCKET]
+             [--remote_path REMOTE_PATH] [--push_data] [--dataset DATASET]
+             [--atlas ATLAS] [--debug] [--sked] [--skreg] [--vox VOX] [-c]
+             [--mod MOD] [--tt TT] [--mf MF] [--sp SP] [--seeds SEEDS]
+             [--modif MODIF]
+             bids_dir output_dir
+
+This is an end-to-end connectome estimation pipeline from M3r Images.
+
+positional arguments:
+bids_dir              The directory with the input dataset formatted
+                      according to the BIDS standard.
+output_dir            The directory where the output files should be stored.
+                      If you are running group level analysis this folder
+                      should be prepopulated with the results of the
+                      participant level analysis.
+
+optional arguments:
+-h, --help            show this help message and exit
+--participant_label PARTICIPANT_LABEL [PARTICIPANT_LABEL ...]
+                      The label(s) of the participant(s) that should be
+                      analyzed. The label corresponds to
+                      sub-&lt;participant_label&gt; from the BIDS spec (so it does
+                      not include &quot;sub-&quot;). If this parameter is not provided
+                      all subjects should be analyzed. Multiple participants
+                      can be specified with a space separated list.
+--session_label SESSION_LABEL [SESSION_LABEL ...]
+                      The label(s) of the session that should be analyzed.
+                      The label corresponds to ses-&lt;participant_label&gt; from
+                      the BIDS spec (so it does not include &quot;ses-&quot;). If this
+                      parameter is not provided all sessions should be
+                      analyzed. Multiple sessions can be specified with a
+                      space separated list.
+--run_label RUN_LABEL [RUN_LABEL ...]
+                      The label(s) of the run that should be analyzed. The
+                      label corresponds to run-&lt;run_label&gt; from the BIDS
+                      spec (so it does not include &quot;task-&quot;). If this
+                      parameter is not provided all runs should be analyzed.
+                      Multiple runs can be specified with a space separated
+                      list.
+--bucket BUCKET       The name of an S3 bucket which holds BIDS organized
+                      data. You must have built your bucket with credentials
+                      to the S3 bucket you wish to access.
+--remote_path REMOTE_PATH
+                      The path to the data on your S3 bucket. The data will
+                      be downloaded to the provided bids_dir on your
+                      machine.
+--push_data           flag to push derivatives back up to S3.
+--dataset DATASET     The name of the dataset you are perfoming QC on.
+--atlas ATLAS         The atlas being analyzed in QC (if you only want one).
+--debug               If False, remove any old files in the output
+                      directory.
+--sked                Whether to skip eddy correction if it has already been
+                      run.
+--skreg               whether or not to skip registration
+--vox VOX             Voxel size to use for template registrations (e.g.
+                      default is &#39;2mm&#39;)
+-c, --clean           Whether or not to delete intemediates
+--mod MOD             Determinstic (det) or probabilistic (prob) tracking.
+                      Default is det.
+--tt TT               Tracking approach: local or particle. Default is
+                    local.
+--mf MF               Diffusion model: csd or csa. Default is csd.
+--sp SP               Space for tractography. Default is native.
+--seeds SEEDS         Seeding density for tractography. Default is 20.
+--modif MODIF         Name of folder on s3 to push to. If empty, push to a
+                      folder with m2g&#39;s version number.
+</pre></div>
+</div>
+<p>In order to share data between our container and the rest of our machine in Docker, we need to mount a volume. Docker does this with the -v flag. Docker expects its input formatted as: <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">path/to/local/data:/path/in/container</span></code>. We’ll do this when we launch our container, as well as give it a helpful name so we can locate it later on.</p>
+<p><strong>To run m2g on data</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">data</span><span class="p">:</span><span class="o">/</span><span class="n">data</span> <span class="n">neurodata</span><span class="o">/</span><span class="n">m2g</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">outputs</span>
+</pre></div>
+</div>
+</section>
+<section id="pip">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Pip</a><a class="headerlink" href="#pip" title="Permalink to this heading">¶</a></h3>
+<p>m2g relies on FSL, Dipy, networkx, and nibabel, numpy scipy, scikit-learn, scikit-image, nilearn. You should install FSL through the instructions on their website, then follow install other Python dependencies with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">m2g</span>
+</pre></div>
+</div>
+<p>The only known packages which require a specific version are plotly and networkx, due to backwards-compatability breaking changes.</p>
+<p>Installation shouldn’t take more than a few minutes, but depends on your internet connection.</p>
+</section>
+<section id="github">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Github</a><a class="headerlink" href="#github" title="Permalink to this heading">¶</a></h3>
+<p>To install directly from Github, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">neurodata</span><span class="o">/</span><span class="n">m2g</span>
+<span class="n">cd</span> <span class="n">m2g</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
