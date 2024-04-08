@@ -30,7 +30,7 @@ Output Summary Table
     * - Tractography
       - tensor field
       - fiber tracts
-      - 
+      -
     * - Graph Generation
       - fiber tracts, parcellations
       - connectome
@@ -40,7 +40,7 @@ Output Summary Table
 Output subject-level pipeline summary
 =====================================
 
-.. figure:: ../_static/ndmg-d-detailed-pipeline.jpg
+.. figure:: ./_static/ndmg-d-detailed-pipeline.jpg
     :align: left
     :figwidth: 700px
 
@@ -58,7 +58,7 @@ The transform mapping the T1w volume to the template is then applied to the dMRI
 
 Finally, `NDMG` produces a QA plot showing three slices of the first BO volume of the aligned dMRI image overlaid on the MNI152 template in the three principle coordinate planes (Figure S2).
 
-.. figure:: ../_static/registration-qa.png
+.. figure:: ./_static/registration-qa.png
     :align: left
     :figwidth: 700px
 
@@ -74,7 +74,7 @@ Once the dMRI volumes have been aligned to the template, `NDMG` begins diffusion
 
 While high-dimensional diffusion models, such as orientation distribution functions (ODFs) or q-ball, enable reconstruction of crossing fibers and complex fiber trajectories, these methods are designed for images with a large number of diffusion volumes/directions for a given image. Because `NDMG` is designed to be robust across a wide range of dMRI studies, including diffusion tensor imaging, `NDMG` uses a lower-dimensional tensor model. The model, described in detail on DiPy_'s website, computes a 6-component tensor for each voxel in the image. This reduces the dMRI image stack to a single 6-dimensional image that can be used for tractography. `NDMG` generates a QA plot showing slices of the FA map derived from the tensors in nine panels, as below (Figure S3)
 
-.. figure:: ../_static/tensor-qa.png
+.. figure:: ./_static/tensor-qa.png
     :align: left
     :figwidth: 700px
 

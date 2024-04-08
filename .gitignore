@@ -17,3 +17,6 @@ dist/
 _.py
 _.ipynb
 .idea
+
+# sphinx documentation
+docs/_build/*
