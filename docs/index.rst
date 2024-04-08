@@ -25,6 +25,7 @@ Join us on `GitHub <https://github.com/neurodata/m2g>`_.
    install
    diffusion
    functional
+   m2g lecture <https://neurodata.io/talks/ndmg.pdf>
 
 .. toctree::
    :maxdepth: 1
