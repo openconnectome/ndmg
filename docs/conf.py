@@ -54,7 +54,7 @@ extensions = [
 ]
 
 # nbxphinx
-nbsphinx_execute = 'never'
+nbsphinx_execute = "never"
 
 # -- numpydoc
 # Below is needed to prevent errors
