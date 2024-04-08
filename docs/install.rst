@@ -20,9 +20,9 @@ System Requirements
 ====================
 .. TODO: update package versions
 
-The m2g pipeline was developed and tested primarily on Mac OSX, Ubuntu (12, 14, 16, 18), and CentOS (5, 6);
+The m2g pipeline was developed and tested primarily on Mac OSX, Ubuntu (16, 18, 20, 22), and CentOS (5, 6);
 
-Made to work on Python 3.6;
+Made to work on Python 3.8;
 
 Is wrapped in a Docker container;
 
@@ -34,7 +34,7 @@ Has key features built upon FSL, Dipy, Nibabel, Nilearn, Networkx, Numpy, Scipy,
 
 Takes approximately 1-core, 8-GB of RAM, and 1 hour to run for most datasets.
 
-While m2g is quite robust to Python package versions (with only few exceptions, mentioned in the installation guide), an example of possible versions (taken from the m2g Docker Image with version v0.2.0) is shown below. Note: this list excludes many libraries which are standard with a Python distribution, and a complete list with all packages and versions can be produced by running pip freeze within the Docker container mentioned above. ::
+While m2g is quite robust to Python package versions (with only few exceptions, mentioned in the installation guide), an example of possible versions (taken from the m2g Docker Image with version v0.3.0) is shown below. Note: this list excludes many libraries which are standard with a Python distribution, and a complete list with all packages and versions can be produced by running pip freeze within the Docker container mentioned above. ::
 
     awscli==1.16.210 , boto3==1.9.200 , botocore==1.12.200 , colorama==0.3.9 , configparser>=3.7.4 ,
     Cython==0.29.13 , dipy==0.16.0 , duecredit==0.7.0 , fury==0.3.0 , graspy==0.0.3 , ipython==7.7.0 ,
