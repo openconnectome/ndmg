@@ -1,5 +1,5 @@
 ***********************
-Manuscript Reproduction
+Manuscript Figures
 ***********************
 .. toctree::
    :hidden:
