@@ -5,10 +5,6 @@ m2g.utils.reg_utils
 Contains small-scale registration utilities.
 """
 
-# standard library imports
-import os
-import subprocess
-
 # package imports
 import nibabel as nib
 import nilearn.image as nl
