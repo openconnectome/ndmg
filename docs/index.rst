@@ -23,6 +23,7 @@ Join us on `GitHub <https://github.com/neurodata/m2g>`_.
    :maxdepth: 1
 
    install
+   quickstart
    diffusion
    functional
    paper/index

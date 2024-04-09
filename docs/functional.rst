@@ -18,22 +18,22 @@ Output Summary Table
       - Inputs
       - Outputs
       - QA figures
-    * - Registration
-      - raw fMRI, raw T1w, template
-      - aligned fMRI
+    * - Preprocessing
+      - raw fMRI, raw T1w
+      - preprocessed fMRI
       - Figure S2
-    * - Nuisance Correction
-      - aligned dMRI
-      - tensor field
-      - Figure S3
-    * - Tractography
-      - tensor field
-      - fiber tracts
+    * - Registration
+      - preprocessed fMRI, preprocessed T1w, template
+      - aligned fMRI
       -
+    * - Nuisance Correction
+      - aligned fMRI
+      - corrected fMRI
+      - Figure S3
     * - Graph Generation
-      - fiber tracts, parcellations
+      - corrected fMRI, parcellations
       - connectome
-      - Figure S4
+      -
 
 
 Pipeline Summary
@@ -46,48 +46,46 @@ Pipeline Summary
     Figure 1: The ``m2g-f`` organizes the data for processing by CPAC’s functional pipeline that we developed here. The ``m2g-f`` pipeline consists of 4 main steps: 1) preprocessing, 2) registration,  3) nuisance correction, and 4) graph generation. Each of these sections leverages publicely available tools and data to robustly produce the desired derivative of each step. Alongside derivative production, ``m2g-f`` produces QA figures at each stage that enable qualitative evaluation of the pipeline's performance.
 
 
-------------
+-------------
 Preprocessing
-------------
+-------------
 
-Registration in ``m2g`` leverages FSL and the Nilearn Python package. ``m2g`` uses linear registrations because non-linear methods had higher variability across studies and increased the time requirements of the pipeline dramatically.
+The ``m2g-f`` pipeline in CPAC uses AFNI's SkullStripping function with a variable shrink factor between 0.4 and 0.6 over 250 iterations with nearest neighbor interpolation to eliminate all non-neuronal structures from the anatomical image. The resulting anatomical file is resampled to the desired resolution voxel size using FSL's FNIRT. Slice timing correction is then performed using AFNI's 3dTshift, utilizing the TR value and scan acquisition method provided by the user. The resulting image is then motion corrected using AFNI's 3dvolreg, aligning all images to the first image in the functional MRI's timeseries.
 
-The \texttt{m2g-f} pipeline in CPAC uses AFNI's SkullStripping function \cite{AFNI} with a variable shrink factor between 0.4 and 0.6 over 250 iterations with nearest neighbor interpolation to eliminate all non-neuronal structures from the anatomical image. The resulting anatomical file is resampled to the desired resolution voxel size using FSL's FNIRT \cite{fsl1, fsl2, fsl3}. Slice timing correction is then performed using AFNI's 3dTshift \cite{AFNI}, utilizing the TR value  and scan acquisition method provided by the user. The resulting image is then motion corrected using AFNI's 3dvolreg, aligning all images to the first image in the functional MRI's timeseries.
+Finally, ``m2g`` produces a QA plot showing the stripped image overlayed with the removed skull (Figure S2).
 
-Finally, ``m2g`` produces a QA plot showing three slices of the first BO volume of the aligned dMRI image overlaid on the MNI152 template in the three principle coordinate planes (Figure S2).
-
-.. figure:: ./_static/registration-qa.png
+.. figure:: ./_static/qa-f/func_skullstrip.png
     :align: left
     :figwidth: 700px
 
-    Figure S2: ``m2g-f`` **Registration QA**. ``m2g-f`` produces registration QA showing the zeroth slice of the dMRI sequence in green overlaid on the template brain in purple.
+    Figure S2: ``m2g-f`` **Preprocessing QA**. ``m2g-f`` produces QA plot showing the stripped image overlayed with the removed skull.
 
 -----------------
 Registration
 -----------------
 
-Nonlinear boundary based registration of the preprocessed fMRI and anatomical images are performed in order to transform them into MNI152 space. The MNI152 6th generation anatomical reference image \cite{mni152} is used in this registration process, as it is FSL's preferred image. The functional image is then registered to the anatomical scan using FSL bet \cite{fsl1, fsl2, fsl3} with BBR. FSL's standard white matter, grey matter, and cerebral spinal fluid masks are then registered onto the functional image using FSL's FAST thresholding, resulting in segmentation tissue masks. The specified atlases that are going to be used in the connectome generation are also registered to the functional space using FSL's FLIRT function.
+Nonlinear boundary based registration of the preprocessed fMRI and anatomical images are performed in order to transform them into MNI152 space. The MNI152 6th generation anatomical reference image  is used in this registration process, as it is FSL's preferred image. The functional image is then registered to the anatomical scan using FSL ``bet`` with BBR. FSL's standard white matter, grey matter, and cerebral spinal fluid masks are then registered onto the functional image using FSL's ``FAST`` thresholding, resulting in segmentation tissue masks. The specified atlases that are going to be used in the connectome generation are also registered to the functional space using FSL's ``FLIRT ``function.
 
-.. figure:: ./_static/tensor-qa.png
+
+-------------------
+Nuisance Correction
+-------------------
+
+Nuisance correction of the functional image is performed using the component based noise correction (``CompCor``) method. Using ''noise ROIs'', or areas of white matter and cerebral spinal fluid whose intensity values are unlikely to be modulated by neural activity, physiological noise can be isolated.Based on this assumption, physiological noise in gray matter regions can be corrected for by regressing out principal components from noise ROIs. CompCor uses the previously registered white matter and cerebral spinal fluid masks (csf) in order to determine noise ROIs. A principal component analysis is applied using the top five components of the white matter and csf to characterize the times series data from the noise ROIs. Significant principal components are then introduced as covariates in a general linear model as an estimate for the physiological noise single space. Polynomial Detrending is also performed to remove linear or quadratic trends in the timeseries, likely from changes in scanner heat or subject movement. After nuisance regression, frequency filtering occurs on the functional data using a bandpass filter from 0.01 Hz to 0.1 Hz to account for low-frequency drift and high-frequency noise.
+
+Finally, ``m2g`` produces a QA plot showing the plots for translation and rotation correction of the functional images (Figure S3).
+
+.. figure:: ./_static/qa-f/func_motion_plot.png
     :align: left
     :figwidth: 700px
 
-    Figure S3: ``m2g-f`` **Tensor Estimation QA**. ``m2g-f`` produces tensor QA showing the voxelwise deterministic tensor model fit to the aligned dMRI sequence.
-
------------------
-Nuisance Correction
------------------
-
-``m2g`` uses DiPy's deterministic tractography algorithm, ``EuDX``. Integration of tensor estimation and tractography methods is minimally complex with this tractography method, as it has been designed to operate on the tensors produced by DiPy in the previous step. Probabilistic tractography would be significantly more computationally expensive, and it remains unclear how well it would perform on data with a small number of diffusion directions. The QA figure for tractography shows a subset of the resolved streamlines in an axial projection of the brain mask with the fibers contained therein (Figure S4). This QA figure allows the user to verify, for example, that streamlines are following expected patterns within the brain and do not leave the boundary of the mask.
+    Figure S3: ``m2g-f`` **Nuisance Correction QA**. ``m2g-f`` produces QA showing movement translational plot for translation correction of functional image.
 
 -----------------
 Graph Estimation
 -----------------
 
-With the anatomical files and atlases registered to the functional image, the estimation of the functional connectomes for each atlas can occur. For each ROI, the timeseries of the average of all voxels within the ROI at each collection time point is calculated. This timeseries is then used to calculate the Pearson's correlation coefficient \cite{pearson} between each pair of ROIs. The functional connectome is then rank-transformed by replacing the magnitude of the correlation with its relative rank, from smallest to largest \cite{discriminability}. The resulting adjacency matrix of correlations is then saved, along with an edgelist file containing the same information.
-
-
-The connectomes generated are graph objects, with nodes in the graph representing regions of interest (ROIs) and edges representing connectivity via fibers. An undirected edge is added to the graph for each pair of ROIs a given streamline passes through. Edges are undirected because dMRI data lacks direction information. Edge weight is the number of streamlines which pass through a given pair of regions. ``m2g`` uses 24 parcellations, including all standard public dMRI parcellations known by the authors. Users may run ``m2g`` using any additional parcellation defined in MNI152 space simply by providing access to it on the command-line. To package an additional parcellation with ``m2g``, please contact the maintainers. The QA for graph generation depicts a number of graph statistics for each of the parcellation schemes. We typically generate this figure at the population level, as depicted in Figure S4.
+With the anatomical files and atlases registered to the functional image, the estimation of the functional connectomes for each atlas can occur. For each ROI, the timeseries of the average of all voxels within the ROI at each collection time point is calculated. This timeseries is then used to calculate the Pearson's correlation coefficient  between each pair of ROIs. The functional connectome is then rank-transformed by replacing the magnitude of the correlation with its relative rank, from smallest to largest. The resulting adjacency matrix of correlations is then saved, along with an edgelist file containing the same information.
 
 
 Pipeline Outputs
