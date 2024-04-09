@@ -6,11 +6,10 @@ Diffusion Pipeline
 
 Here we take a deep-dive into the modules of the `m2g-d` pipeline. We will explain algorithm and parameter choices that were implemented at each step and the justification for why they were used over alternatives.
 
-
 Output Summary Table
 ====================
 
-.. list-table:: `m2g-d` **IO Breakdown**. Below, we look at the inputs, outputs, and QA figures produced by `m2g-d`.
+.. list-table:: `m2g-d` **IO Breakdown**. Below, we look at the inputs, outputs, and QA figures produced by `m2g-d`. See `Pipeline Outputs`_ for more detailed file structure.
     :widths: 10 5 10 50
     :header-rows: 1
     :stub-columns: 0
@@ -37,18 +36,18 @@ Output Summary Table
       - Figure S4
 
 
-Output subject-level pipeline summary
+Pipeline Summary
 =====================================
 
-.. figure:: ./_static/ndmg-d-detailed-pipeline.jpg
+.. figure:: ./_static/m2g_pipeline.png
     :align: left
     :figwidth: 700px
 
-    Figure S1: `m2g-d` **detailed pipeline**. The `m2g-d` pipeline consists of 4 main steps: Registration (**D1**), Tensor Estimation (**D2**), Tractography (**D3**), and Graph Generation (**D4**). Each of these sections leverages publicely available tools and data to robustly produce the desired derivative of each step. Alongside derivative production, `m2g` produces QA figures at each stage, as can be seen in **D1-4**, that enable qualitative evaluation of the pipeline's performance.
+    Figure 1: The `m2g-d` pipeline transforms Nifti-formatted dMRI data into sparse structural connectomes. The `m2g-d` pipeline consists of 4 main steps: 1) preprocessing, 2) registration,  3) tractography, and 4) graph generation. Each of these sections leverages publicely available tools and data to robustly produce the desired derivative of each step. Alongside derivative production, `m2g-d` produces QA figures at each stage that enable qualitative evaluation of the pipeline's performance.
 
-
+------------
 Registration
-============
+------------
 
 Registration in `m2g` leverages FSL and the Nilearn Python package. `m2g` uses linear registrations because non-linear methods had higher variability across studies and increased the time requirements of the pipeline dramatically.
 
@@ -64,9 +63,9 @@ Finally, `m2g` produces a QA plot showing three slices of the first BO volume of
 
     Figure S2: `m2g-d` **Registration QA**. `m2g-d` produces registration QA showing the zeroth slice of the dMRI sequence in green overlaid on the template brain in purple.
 
-
+-----------------
 Tensor Estimation
-=================
+-----------------
 
 .. _DiPy: http://nipy.org/dipy/examples_built/reconst_dti.html
 
@@ -80,34 +79,32 @@ While high-dimensional diffusion models, such as orientation distribution functi
 
     Figure S3: `m2g-d` **Tensor Estimation QA**. `m2g-d` produces tensor QA showing the voxelwise deterministic tensor model fit to the aligned dMRI sequence.
 
-
+-----------------
 Tractography
-=============
+-----------------
 
 `m2g` uses DiPy's deterministic tractography algorithm, ``EuDX``. Integration of tensor estimation and tractography methods is minimally complex with this tractography method, as it has been designed to operate on the tensors produced by DiPy in the previous step. Probabilistic tractography would be significantly more computationally expensive, and it remains unclear how well it would perform on data with a small number of diffusion directions. The QA figure for tractography shows a subset of the resolved streamlines in an axial projection of the brain mask with the fibers contained therein (Figure S4). This QA figure allows the user to verify, for example, that streamlines are following expected patterns within the brain and do not leave the boundary of the mask.
 
-
+-----------------
 Graph Estimation
-================
+-----------------
 
 `m2g` uses the fiber streamlines to generate connectomes across multiple parcellations. Graphs are formed by contracting voxels into graph vertices depending on spatial, anatomical, or functional similarity. Given a parcellation with vertices :math:`V` and a corresponding mapping :math:`P(v_i)` indicating the voxels within a region :math:`i`, we contract our fiber streamlines as follows. To form a graph :math:`G(V, E, w)`, we know that :math:`V = \left\{v_i\right\}_{i=1}^N` is the set of all unique vertices in our parcellation. :math:`E = V \times V` is a collection of possible edges between different vertex regions. :math:`w : V \times V \to \mathbb{Z}_+` is a weighting function for each edge in the graph. Here, :math:`w(v_i,v_j) = \sum_{w \in P(v_j)}{\sum_{w \in P(v_i)}\mathbb{i}\left\{F_{u,w}\right\}}` where :math:`F_{u,w}` is true if a fiber tract exists between voxels :math:`u` and :math:`w`, and false if there is no fiber tract between voxels :math:`u` and :math:`w`.
 
 The connectomes generated are graph objects, with nodes in the graph representing regions of interest (ROIs) and edges representing connectivity via fibers. An undirected edge is added to the graph for each pair of ROIs a given streamline passes through. Edges are undirected because dMRI data lacks direction information. Edge weight is the number of streamlines which pass through a given pair of regions. `m2g` uses 24 parcellations, including all standard public dMRI parcellations known by the authors. Users may run `m2g` using any additional parcellation defined in MNI152 space simply by providing access to it on the command-line. To package an additional parcellation with `m2g`, please contact the maintainers. The QA for graph generation depicts a number of graph statistics for each of the parcellation schemes. We typically generate this figure at the population level, as depicted in Figure S4.
 
 
-Files
-=====
+Pipeline Outputs
+================
 
-The organization of the output files generated by the m2g-d pipeline are shown below. If you only care about the connectome edgelists (**m2g**'s fundamental output), you can find them in `/output/connectomes_d`.
+The organization of the output files generated by the m2g-d pipeline are shown below. If you only care about the connectome edgelists (**m2g**'s fundamental output), you can find them in `/output/connectomes_d`. File labels that may appear on output files, these denote additional actions m2g may have done:
 
-File labels that may appear on output files, these denote additional actions m2g may have done:
+#. `RAS` = File was originally in RAS orientation, so no reorientation was necessary
+#. `reor_RAS` = File has been reoriented into RAS+ orientation
+#. `nores` = File originally had the desired voxel size specified by the user (default 2mmx2mmx2mm), resulting in no reslicing
+#. `res` = The file has been resliced to the desired voxel size specified by the user
 
-#. RAS = File was originally in RAS orientation, so no reorientation was necessary
-#. reor_RAS = File has been reoriented into RAS+ orientation
-#. nores = File originally had the desired voxel size specified by the user (default 2mmx2mmx2mm), resulting in no reslicing
-#. res = The file has been resliced to the desired voxel size specified by the user
-
-..code-block::
+.. code-block::
 
     /output
         /anat_d
