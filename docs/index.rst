@@ -20,7 +20,7 @@ Join us on `GitHub <https://github.com/neurodata/m2g>`_.
 
 .. toctree::
    :caption: Documentation
-   :maxdepth: 3
+   :maxdepth: 1
 
    install
    diffusion
