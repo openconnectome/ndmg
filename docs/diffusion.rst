@@ -10,7 +10,7 @@ Output Summary Table
 ====================
 
 .. list-table:: ``m2g-d`` **IO Breakdown**. Below, we look at the inputs, outputs, and QA figures produced by ``m2g-d``. See `Pipeline Outputs`_ for more detailed file structure.
-    :widths: 10 5 10 50
+    :widths: 10 15 10 5
     :header-rows: 1
     :stub-columns: 0
 
