@@ -52,7 +52,7 @@ class DirectorySweeper:
 
     def __init__(self, bdir, subjects=None, sessions=None, pipeline="dwi"):
         self.bdir = bdir
-        self.layout = bids.BIDSLayout(bdir)
+        self.layout = bids.BIDSLayout(bdir, validate=True)
         if subjects is None:
             subjects = self.layout.get_subjects()
         if sessions is None:

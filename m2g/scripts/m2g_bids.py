@@ -154,7 +154,7 @@ def main():
     parser.add_argument(
         "--pipeline",
         action="store",
-        help="""Pipline to use when analyzing the input data, 
+        help="""Pipline to use when analyzing the input data,
         either func, dwi, or both. Default is dwi.""",
         default="dwi",
     )
@@ -307,7 +307,7 @@ def main():
         input_dir = as_directory(home + "/.m2g/input", remove=True)
         if (not creds) and push_location:
             raise AttributeError(
-                """No AWS credentials found, but "--push_location" flag called. 
+                """No AWS credentials found, but "--push_location" flag called.
                 Pushing will most likely fail."""
             )
 
@@ -338,11 +338,11 @@ def main():
     # make sure we have AFNI and FSL
     check_dependencies()
     # make sure input directory is BIDs-formatted
-    assert is_bids(input_dir)
+    # assert is_bids(input_dir)
 
     print(
         f"""
-        input directory location: {input_dir}. 
+        input directory location: {input_dir}.
         Input directory contents: {os.listdir(input_dir)}.
         """
     )
