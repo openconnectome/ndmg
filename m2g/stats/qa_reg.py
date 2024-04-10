@@ -48,8 +48,8 @@ def reg_mri_pngs(
     maxthr: int
         upper percentile threshold
     """
-    atlas_data = nb.load(atlas).get_data()
-    mri_data = nb.load(mri).get_data()
+    atlas_data = nb.load(atlas).get_fdata()
+    mri_data = nb.load(mri).get_fdata()
     if mri_data.ndim == 4:  # 4d data, so we need to reduce a dimension
         if mean:
             mr_data = mri_data.mean(axis=3)

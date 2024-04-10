@@ -82,7 +82,7 @@ class GraphTools:
         # self.roi_file = rois
         # self.roi_img = nib.load(self.roi_file)
         self.rois = nib.load(rois)
-        self.rois = self.rois.get_data().astype("int")
+        self.rois = self.rois.get_fdata().astype("int")
         # self.n_ids = self.rois[self.rois > 0]
         # self.N = len(self.n_ids)
         self.modal = sens
@@ -171,7 +171,7 @@ class GraphTools:
         )  # TODO : voxel_size was removed in dipy 1.0.0, make sure that didn't break anything when voxel size is not 2mm
 
         self.attr = nib.load(self.attr)
-        self.attr = self.attr.get_data().astype("int")
+        self.attr = self.attr.get_fdata().astype("int")
 
         mx = len(np.unique(self.attr.astype(np.int64)))
         # node_dict = dict(

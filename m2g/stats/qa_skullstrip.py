@@ -56,7 +56,7 @@ def gen_overlay_pngs(
         If None, the respective min and max of the color array is used.
     """
     original_name = get_filename(original)
-    brain_data = nb.load(brain).get_data()
+    brain_data = nb.load(brain).get_fdata()
     if brain_data.ndim == 4:  # 4d data, so we need to reduce a dimension
         if mean:
             brain_data = brain_data.mean(axis=3)

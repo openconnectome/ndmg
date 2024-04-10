@@ -26,9 +26,9 @@ def qa_fast_png(csf, gm, wm, outdir):
     """
 
     # load data
-    gm_data = nb.load(gm).get_data()
-    csf_data = nb.load(csf).get_data()
-    wm_data = nb.load(wm).get_data()
+    gm_data = nb.load(gm).get_fdata()
+    csf_data = nb.load(csf).get_fdata()
+    wm_data = nb.load(wm).get_fdata()
 
     # set Color map
     cmap1 = LinearSegmentedColormap.from_list("mycmap1", ["white", "blue"])

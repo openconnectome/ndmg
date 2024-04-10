@@ -99,7 +99,7 @@ def probmap2mask(prob_map, mask_path, t, erode=0):
     """
     print(f"Extracting Mask from probability map {prob_map}...")
     prob = nib.load(prob_map)
-    prob_dat = prob.get_data()
+    prob_dat = prob.get_fdata()
     mask = (prob_dat > t).astype(int)
     if erode > 0:
         mask = erode_mask(mask, v=erode)
@@ -237,13 +237,13 @@ def skullstrip_check(dmrireg, parcellations, outdir, prep_anat, vox_size, reg_st
             labels_im_file, vox_size, outdir, sens="anat_d"
         )
         orig_lab = nib.load(labels_im_file)
-        orig_lab = orig_lab.get_data().astype("int")
+        orig_lab = orig_lab.get_fdata().astype("int")
         n_ids = orig_lab[orig_lab > 0]
         num = len(np.unique(n_ids))
 
         labels_im_file_dwi = dmrireg.atlas2t1w2dwi_align(labels_im_file, dsn)
         labels_im = nib.load(labels_im_file_dwi)
-        align_lab = labels_im.get_data().astype("int")
+        align_lab = labels_im.get_fdata().astype("int")
         n_ids_2 = align_lab[align_lab > 0]
         num2 = len(np.unique(n_ids_2))
 
@@ -538,7 +538,7 @@ def resample(base, ingested, template):
     target_im = nl.resample_img(
         base_im,
         target_affine=template_im.get_affine(),
-        target_shape=template_im.get_data().shape,
+        target_shape=template_im.get_fdata().shape,
         interpolation="nearest",
     )
     # Saves new image
@@ -586,9 +586,9 @@ def wm_syn(template_path, fa_path, working_dir):
     fa_img = nib.load(fa_path)
     template_img = nib.load(template_path)
 
-    static = template_img.get_data()
+    static = template_img.get_fdata()
     static_affine = template_img.affine
-    moving = fa_img.get_data().astype(np.float32)
+    moving = fa_img.get_fdata().astype(np.float32)
     moving_affine = fa_img.affine
 
     affine_map = transform_origins(static, static_affine, moving, moving_affine)

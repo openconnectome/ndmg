@@ -517,7 +517,7 @@ def show_template_bundles(final_streamlines, template_path, fname):
     """
 
     renderer = window.Renderer()
-    template_img_data = nib.load(template_path).get_data().astype("bool")
+    template_img_data = nib.load(template_path).get_fdata().astype("bool")
     template_actor = actor.contour_from_roi(
         template_img_data, color=(50, 50, 50), opacity=0.05
     )
@@ -563,7 +563,7 @@ def get_braindata(brain_file):
                 f"; accepted types are numpy.ndarray, "
                 f"string, and nibabel.nifti1.Nifti1Image."
             )
-        braindata = brain.get_data()
+        braindata = brain.get_fdata()
     return braindata
 
 
@@ -597,7 +597,7 @@ def get_slice(mri, volid, sli):
     """
 
     mri_im = nib.load(mri)
-    data = mri_im.get_data()
+    data = mri_im.get_fdata()
     # get the slice at the desired volume
     vol = np.squeeze(data[:, :, :, volid])
 
@@ -728,7 +728,7 @@ def normalize_xform(img):
     ):
         return img
 
-    new_img = img.__class__(img.get_data(), xform, img.header)
+    new_img = img.__class__(img.get_fdata(), xform, img.header)
     # Unconditionally set sform/qform
     new_img.set_sform(xform, xform_code)
     new_img.set_qform(xform, xform_code)
@@ -903,8 +903,8 @@ def parcel_overlap(parcellation1, parcellation2, outpath):
         the path to produce the output.
     """
 
-    p1_dat = nib.load(parcellation1).get_data()
-    p2_dat = nib.load(parcellation2).get_data()
+    p1_dat = nib.load(parcellation1).get_fdata()
+    p2_dat = nib.load(parcellation2).get_fdata()
     p1regs = np.unique(p1_dat)
     p1regs = p1regs[p1regs > 0]
     p2regs = np.unique(p2_dat)

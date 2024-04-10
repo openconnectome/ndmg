@@ -586,7 +586,7 @@ class DmriReg:
             self.atlas_img = nib.load(self.dwi_aligned_atlas)
         else:
             self.atlas_img = nib.load(self.aligned_atlas_t1mni)
-        self.atlas_data = np.around(self.atlas_img.get_data()).astype("int16")
+        self.atlas_data = np.around(self.atlas_img.get_fdata()).astype("int16")
         node_num = len(np.unique(self.atlas_data))
         self.atlas_data[self.atlas_data > node_num] = 0
 
@@ -712,17 +712,17 @@ class DmriReg:
 
         # Threshold WM to binary in dwi space
         thr_img = nib.load(self.wm_in_dwi)
-        thr_img.get_data()[thr_img.get_data() < 0.15] = 0
+        thr_img.get_fdata()[thr_img.get_fdata() < 0.15] = 0
         nib.save(thr_img, self.wm_in_dwi_bin)
 
         # Threshold GM to binary in dwi space
         thr_img = nib.load(self.gm_in_dwi)
-        thr_img.get_data()[thr_img.get_data() < 0.15] = 0
+        thr_img.get_fdata()[thr_img.get_fdata() < 0.15] = 0
         nib.save(thr_img, self.gm_in_dwi_bin)
 
         # Threshold CSF to binary in dwi space
         thr_img = nib.load(self.csf_mask_dwi)
-        thr_img.get_data()[thr_img.get_data() < 0.99] = 0
+        thr_img.get_fdata()[thr_img.get_fdata() < 0.99] = 0
         nib.save(thr_img, self.csf_mask_dwi)
 
         # Threshold WM to binary in dwi space

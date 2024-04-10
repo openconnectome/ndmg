@@ -54,7 +54,7 @@ def build_seed_list(mask_img_file, stream_affine, dens):
     """
 
     mask_img = nib.load(mask_img_file)
-    mask_img_data = mask_img.get_data().astype("bool")
+    mask_img_data = mask_img.get_fdata().astype("bool")
     seeds = utils.random_seeds_from_mask(
         mask_img_data,
         affine=stream_affine,
@@ -251,19 +251,19 @@ class RunTrack:
             tiss_class = "cmc"
 
         self.dwi_img = nib.load(self.dwi)
-        self.data = self.dwi_img.get_data()
+        self.data = self.dwi_img.get_fdata()
         # Loads mask and ensures it's a true binary mask
         self.mask_img = nib.load(self.nodif_B0_mask)
-        self.mask = self.mask_img.get_data() > 0
+        self.mask = self.mask_img.get_fdata() > 0
         # Load tissue maps and prepare tissue classifier
         self.gm_mask = nib.load(self.gm_in_dwi)
-        self.gm_mask_data = self.gm_mask.get_data()
+        self.gm_mask_data = self.gm_mask.get_fdata()
         self.wm_mask = nib.load(self.wm_in_dwi)
-        self.wm_mask_data = self.wm_mask.get_data()
-        self.wm_in_dwi_data = nib.load(self.wm_in_dwi).get_data().astype("bool")
+        self.wm_mask_data = self.wm_mask.get_fdata()
+        self.wm_in_dwi_data = nib.load(self.wm_in_dwi).get_fdata().astype("bool")
         if tiss_class == "act":
             self.vent_csf_in_dwi = nib.load(self.vent_csf_in_dwi)
-            self.vent_csf_in_dwi_data = self.vent_csf_in_dwi.get_data()
+            self.vent_csf_in_dwi_data = self.vent_csf_in_dwi.get_fdata()
             self.background = np.ones(self.gm_mask.shape)
             self.background[
                 (self.gm_mask_data + self.wm_mask_data + self.vent_csf_in_dwi_data) > 0
@@ -279,7 +279,7 @@ class RunTrack:
             # self.tiss_classifier = BinaryStoppingCriterion(self.mask)
         elif tiss_class == "cmc":
             self.vent_csf_in_dwi = nib.load(self.vent_csf_in_dwi)
-            self.vent_csf_in_dwi_data = self.vent_csf_in_dwi.get_data()
+            self.vent_csf_in_dwi_data = self.vent_csf_in_dwi.get_fdata()
             voxel_size = np.average(self.wm_mask.get_header()["pixdim"][1:4])
             step_size = 0.2
             self.tiss_classifier = CmcStoppingCriterion.from_pve(
