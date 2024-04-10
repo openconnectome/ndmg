@@ -28,7 +28,7 @@ If you have never used Docker before, it is useful to run through the Docker doc
 Structural Connectome Pipeline (`m2g-d`)
 ----------------------------------------
 
-Once you have the pipeline up and running, you can run the structural connectome pipeline with::
+The structural connectome pipeline can be ran with::
 
     $ m2g --pipeline dwi <input_directory> <output_directory>
 
@@ -44,17 +44,17 @@ You can set a particular scan and session as well (recommended for batch scripts
 Functional Connectome Pipeline (`m2g-f`)
 ----------------------------------------
 
-Once you have the pipeline up and running, you can run the functional connectome pipeline with::
+The functional connectome pipeline can be ran with::
 
     $ m2g --pipeline func <input_directory> <output_directory>
 
-We recommend specifying an atlas and lowering the default seed density on test runs (although, for real runs, we recommend using the default seeding -- lowering seeding simply decreases runtime)::
+or::
 
-    $ m2g --pipeline func --seeds 1 --parcellation Desikan <input_directory> <output_directory>
+    $ m2g --pipeline func --parcellation Desikan <input_directory> <output_directory>
 
 You can set a particular scan and session as well (recommended for batch scripts)::
 
-    $ m2g --pipeline func --seeds 1 --parcellation Desikan --participant_label <label> --session_label <label> <input_directory> <output_directory>
+    $ m2g --pipeline func --parcellation Desikan --participant_label <label> --session_label <label> <input_directory> <output_directory>
 
 
 Running both `m2g-d` and `m2g-f`
