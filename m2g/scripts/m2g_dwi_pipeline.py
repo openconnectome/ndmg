@@ -354,14 +354,14 @@ def m2g_dwi_worker(
 
     exe_time = datetime.now() - startTime
 
-    if "M2G_URL" in os.environ:
-        print("Note: tractography QA does not work in a Docker environment.")
-    else:
-        # TODO: Check that this still works
-        qa_tractography_out = outdir / "qa/fibers"
-        qa_tractography(streams, str(qa_tractography_out), str(eddy_corrected_data))
-        print("QA tractography Completed.")
-        pass
+    # if "M2G_URL" in os.environ:
+    #     print("Note: tractography QA does not work in a Docker environment.")
+    # else:
+    #     # TODO: Check that this still works
+    #     qa_tractography_out = outdir / "qa/fibers"
+    #     qa_tractography(streams, str(qa_tractography_out), str(eddy_corrected_data))
+    #     print("QA tractography Completed.")
+    #     pass
 
     print(f"Total execution time: {exe_time}")
     print("M2G Complete.")
@@ -374,8 +374,8 @@ def m2g_dwi_worker(
 
 def welcome_message(connectomes):
 
-    line = """\n~~~~~~~~~~~~~~~~\n 
-    Welcome to m2g!\n 
+    line = """\n~~~~~~~~~~~~~~~~\n
+    Welcome to m2g!\n
     Your connectomes will be located here:
     \n\n"""
 
