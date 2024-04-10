@@ -9,15 +9,12 @@ Used for the majority of the registration described here: https://neurodata.io/t
 
 # standard library imports
 import os
-import subprocess
-from argparse import ArgumentParser
 from pathlib import Path
 
 # package imports
 import nibabel as nib
 import numpy as np
 from dipy.io.streamline import load_trk
-from dipy.tracking import utils
 from dipy.tracking.streamline import deform_streamlines
 from nilearn.image import load_img, math_img
 

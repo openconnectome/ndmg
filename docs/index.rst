@@ -20,11 +20,13 @@ Join us on `GitHub <https://github.com/neurodata/m2g>`_.
 
 .. toctree::
    :caption: Documentation
-   :maxdepth: 3
+   :maxdepth: 1
 
    install
+   usage
    diffusion
    functional
+   paper/index
 
 .. toctree::
    :maxdepth: 1
@@ -32,5 +34,4 @@ Join us on `GitHub <https://github.com/neurodata/m2g>`_.
 
    m2g @ GitHub <http://www.github.com/neurodata/m2g/>
    m2g @ PyPI <https://pypi.org/project/m2g/>
-   Issue Tracker <https://github.com/neurodata/m2g/issues>
-   NeuroData Lab <http://neurodata.io/>
+   m2g lecture <https://neurodata.io/talks/ndmg.pdf>

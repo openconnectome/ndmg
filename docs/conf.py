@@ -53,6 +53,9 @@ extensions = [
     # "toctree_filter",
 ]
 
+# nbxphinx
+nbsphinx_execute = "never"
+
 # -- numpydoc
 # Below is needed to prevent errors
 numpydoc_show_class_members = False

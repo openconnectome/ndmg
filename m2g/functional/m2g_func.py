@@ -1,7 +1,6 @@
 import os
 import shutil
 import subprocess
-import sys
 
 import numpy as np
 import regex as re
@@ -93,7 +92,7 @@ def make_script(input_dir, output_dir, data_config, pipeline_config, mem_gb, n_c
     with open(cpac_script, "w+", encoding="utf-8") as script:
         script.write(
             f"""#! /bin/bash
-        python3.7 /code/run.py --data_config_file {data_config} --pipeline_file {pipeline_config} --n_cpus {n_cpus} --mem_gb {mem_gb} {input_dir} {output_dir} participant
+        python3 /code/run.py --data_config_file {data_config} --pipeline_file {pipeline_config} --n_cpus {n_cpus} --mem_gb {mem_gb} {input_dir} {output_dir} participant
         """
         )
 
