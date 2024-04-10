@@ -14,8 +14,6 @@ In this module, m2g:
 
 import glob
 import os
-import re
-import shutil
 
 # standard library imports
 import sys
