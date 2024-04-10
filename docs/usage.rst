@@ -40,6 +40,8 @@ You can set a particular scan and session as well (recommended for batch scripts
 
     $ m2g --pipeline dwi --seeds 1 --parcellation Desikan --participant_label <label> --session_label <label> <input_directory> <output_directory>
 
+The outputs of the pipeline are organized as described `here <diffusion.html#pipeline-outputs>`_.
+
 
 Functional Connectome Pipeline (`m2g-f`)
 ----------------------------------------
@@ -55,6 +57,9 @@ or::
 You can set a particular scan and session as well (recommended for batch scripts)::
 
     $ m2g --pipeline func --parcellation Desikan --participant_label <label> --session_label <label> <input_directory> <output_directory>
+
+The outputs of the pipeline are organized as described `here <functional.html#pipeline-outputs>`_.
+
 
 
 Running both `m2g-d` and `m2g-f`
@@ -88,13 +93,13 @@ Once the pipeline is done running, the resulting outputs can be found in `/outpu
 Working with S3 Datasets
 ========================
 
-**m2g** has the ability to work on datasets stored on [Amazon's Simple Storage Service](https://aws.amazon.com/s3/), assuming they are in BIDS format. Doing so requires you to set your AWS credentials and read the related s3 bucket documentation. You can find a guide [here](https://github.com/neurodata/m2g/blob/deploy/tutorials/Batch.ipynb).
+**m2g** has the ability to work on datasets stored on `Amazon's Simple Storage Service <https://aws.amazon.com/s3/>`_, assuming they are in BIDS format. Doing so requires you to set your AWS credentials and read the related s3 bucket documentation. You can find a guide `here <https://github.com/neurodata/m2g/blob/deploy/tutorials/Batch.ipynb>`_.
 
 
 Example Datasets
 ----------------
 
-Derivatives have been produced on a variety of datasets, all of which are made available on [our website](http://m2g.io). Each of these datsets is available for access and download from their respective sources. Alternatively, example datasets on the [BIDS website](http://bids.neuroimaging.io) which contain diffusion data can be used and have been tested; `ds114`, for example.
+Derivatives have been produced on a variety of datasets, all of which are made available on `our website <http://m2g.io>`_. Each of these datsets is available for access and download from their respective sources. Alternatively, example datasets on the `BIDS website <http://bids.neuroimaging.io>`_ which contain diffusion data can be used and have been tested; `ds114`, for example.
 
 
 Command-Line Arguments
