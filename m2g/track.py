@@ -355,6 +355,7 @@ class RunTrack:
                 npeaks=5,
                 normalize_peaks=True,
             )
+            print(self.qa_tensor_out)
             qa_tensor.create_qa_figure(
                 self.mod_peaks.peak_dirs,
                 self.mod_peaks.peak_values,
