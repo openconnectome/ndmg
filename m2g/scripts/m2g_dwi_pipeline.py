@@ -9,27 +9,22 @@ For a full description, see here: https://neurodata.io/talks/ndmg.pdf
 
 
 # multithreading
-import multiprocessing as mp
 import os
 
 # standard library imports
 import shutil
 import time
-from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
-from subprocess import Popen
 
 # package imports
 import nibabel as nib
 import numpy as np
 from dipy.io import read_bvals_bvecs
-from dipy.tracking.streamline import Streamlines
 
 # m2g imports
 from m2g import graph, preproc, register, track
-from m2g.stats.qa_tractography import qa_tractography
-from m2g.utils import cloud_utils, gen_utils, reg_utils
+from m2g.utils import gen_utils, reg_utils
 
 # TODO : not sure why this is here, potentially remove
 os.environ["MPLCONFIGDIR"] = "/tmp/"
@@ -276,6 +271,7 @@ def m2g_dwi_worker(
     prep_track = init_dirs["dwi_dirs"][0]
     start_time = time.time()
     qa_tensor = str(init_dirs["qa_dirs"][6] / "/Tractography_Model_Peak_Directions.png")
+    print(init_dirs["qa_dirs"][6] / "/Tractography_Model_Peak_Directions.png")
 
     # build seeds
     seeds = track.build_seed_list(reg.wm_gm_int_in_dwi, np.eye(4), dens=int(seeds))
