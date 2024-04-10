@@ -49,11 +49,11 @@ The **m2g** pipeline:
 
 # Installation
 
-see
+Instructions can be found within our documentation: https://docs.neurodata.io/m2g/tutorials/install.html
 
 # Usage
 
-See
+Instructions can be found within our documentation: https://docs.neurodata.io/m2g/tutorials/usage.html
 
 # License
 
