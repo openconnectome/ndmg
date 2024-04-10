@@ -311,4 +311,4 @@ class GraphTools:
         User friendly wrapping and display of graph properties
         """
         print("\nGraph Summary:")
-        print(nx.info(self.g))
+        print(self.g)
