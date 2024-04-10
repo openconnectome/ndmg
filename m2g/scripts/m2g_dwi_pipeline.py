@@ -371,6 +371,11 @@ def m2g_dwi_worker(
         "NOTE :: m2g uses native-space registration to generate connectomes.\n Without post-hoc normalization, multiple connectomes generated with m2g cannot be compared directly."
     )
 
+    # ------- Remove unused QA path --------------------------------- #
+    for i in [0, 2, 4]:
+        init_dirs["qa_dirs"][i].rmdir()
+
+
 
 def welcome_message(connectomes):
 
