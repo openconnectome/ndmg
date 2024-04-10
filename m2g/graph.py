@@ -241,7 +241,7 @@ class GraphTools:
         # conn_matrix[np.isnan(conn_matrix)] = 0
         # conn_matrix[np.isinf(conn_matrix)] = 0
         # conn_matrix = np.asmatrix(np.maximum(conn_matrix, conn_matrix.transpose()))
-        g = nx.from_numpy_matrix(conn_matrix)
+        g = nx.from_numpy_array(conn_matrix)
 
         return g
 
@@ -273,9 +273,9 @@ class GraphTools:
         elif fmt == "graphml":
             nx.write_graphml(self.g, graphname)
         elif fmt == "txt":
-            np.savetxt(graphname, nx.to_numpy_matrix(self.g))
+            np.savetxt(graphname, nx.to_numpy_array(self.g))
         elif fmt == "npy":
-            np.save(graphname, nx.to_numpy_matrix(self.g))
+            np.save(graphname, nx.to_numpy_array(self.g))
         elif fmt == "igraph":
             nx.write_weighted_edgelist(
                 self.g, graphname, delimiter=" ", encoding="utf-8"
@@ -299,7 +299,7 @@ class GraphTools:
             name of the generated graph (do not include '.png')
         """
 
-        conn_matrix = np.array(nx.to_numpy_matrix(self.g))
+        conn_matrix = np.array(nx.to_numpy_array(self.g))
         conn_matrix = ptr.pass_to_ranks(conn_matrix)
         heatmap(conn_matrix)
         outpath = str(qa_dir / f"{Path(graphname).stem}.png")
