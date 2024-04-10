@@ -13,10 +13,6 @@ In this module, m2g:
 import warnings
 
 warnings.simplefilter("ignore")
-import os
-import re
-import sys
-from argparse import ArgumentParser
 
 import matplotlib as mpl
 import nibabel as nb

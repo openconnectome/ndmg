@@ -10,14 +10,9 @@ In this module, m2g compares the registered and reference brain data to show the
 import warnings
 
 warnings.simplefilter("ignore")
-import os
-import re
-import sys
-from argparse import ArgumentParser
 
 import matplotlib as mpl
 import nibabel as nb
-import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from scipy import ndimage
 
