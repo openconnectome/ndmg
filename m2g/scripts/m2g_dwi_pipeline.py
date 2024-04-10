@@ -130,8 +130,6 @@ def m2g_dwi_worker(
     warm_welcome = welcome_message(init_dirs["connectomes"])
     print(warm_welcome)
 
-    print(init_dirs["qa_dirs"]) # TODO REMOVE
-
     # -------- Preprocessing Steps --------------------------------- #
 
     # set up directories
@@ -272,11 +270,7 @@ def m2g_dwi_worker(
     # prep_track: Path = outdir / "dwi/fiber"
     prep_track = init_dirs["dwi_dirs"][0]
     start_time = time.time()
-    qa_tensor = str(init_dirs["qa_dirs"][6] / "/Tractography_Model_Peak_Directions.png")
-
-    # TODO REMOVE
-    print(init_dirs["qa_dirs"][6] / "/Tractography_Model_Peak_Directions.png")
-    print(init_dirs["qa_dirs"])
+    qa_tensor = str(init_dirs["qa_dirs"][6] / "Tractography_Model_Peak_Directions.png")
 
     # build seeds
     seeds = track.build_seed_list(reg.wm_gm_int_in_dwi, np.eye(4), dens=int(seeds))
