@@ -98,7 +98,7 @@ def qa_tractography(stream_path, qa_out_path, brain_path):
     """
 
     # Use window to visualize the streamlines
-    r = window.renderer()
+    r = window.Scene()
 
     # Load the streamline.trk file
     streamlines_mni_load = nib.streamlines.load(stream_path).streamlines
@@ -116,11 +116,11 @@ def qa_tractography(stream_path, qa_out_path, brain_path):
     r.add(streamlines_actor)
     # window.show(r)
 
-    showmng = window.ShowManager(r)
+    # showmng = window.ShowManager(r)
     # window.record function can rotate the 3D-image, then get the snapshot of the specific angle.
     window.record(
         r,
-        cam_pos=(70.03, 64.97, 269.80),
+        # cam_pos=(70.03, 64.97, 269.80),
         cam_view=(0, 1, 0),
         path_numbering=True,
         out_path=qa_out_path + "/Rotate_Z_axis_",
@@ -131,7 +131,7 @@ def qa_tractography(stream_path, qa_out_path, brain_path):
     )
     window.record(
         r,
-        cam_pos=(70.03, 64.97, 269.80),
+        # cam_pos=(70.03, 64.97, 269.80),
         cam_view=(1, 0, 0),
         path_numbering=True,
         out_path=qa_out_path + "/Rotate_Y_axis_",
@@ -142,7 +142,7 @@ def qa_tractography(stream_path, qa_out_path, brain_path):
     )
     window.record(
         r,
-        cam_pos=(70.03, 64.97, 269.80),
+        # cam_pos=(70.03, 64.97, 269.80),
         cam_view=(0, 0, 1),
         path_numbering=True,
         out_path=qa_out_path + "/Rotate_X_axis_",
@@ -151,5 +151,5 @@ def qa_tractography(stream_path, qa_out_path, brain_path):
         reset_camera=True,
         size=(600, 600),
     )
-    showmng.exit()
+    # showmng.exit()
     combine_plot(qa_out_path, brain_path)
