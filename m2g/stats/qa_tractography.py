@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
 from dipy.tracking.streamline import Streamlines
-from fury import actor, colormap, ui, window
-from matplotlib.colors import LinearSegmentedColormap
+from fury import actor, colormap, window
 from PIL import Image
 
 

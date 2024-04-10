@@ -13,13 +13,11 @@ import warnings
 
 warnings.simplefilter("ignore")
 import itertools
-from argparse import ArgumentParser
 
 import matplotlib
-import nibabel as nb
 import numpy as np
 from dipy.viz import actor, window
-from fury.actor import orient2rgb
+from fury.colormap import orient2rgb
 from scipy import ndimage
 
 from m2g.utils import qa_utils
