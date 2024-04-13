@@ -38,7 +38,7 @@ Check out some [resources](http://m2g.io) on our website, or our [function refer
 The **m2g** pipeline:
 
 - was developed and tested primarily on Mac OS (10,11), Ubuntu (16, 18, 20), and CentOS (5, 6);
-- made to work on Python 3.8;
+- made to work on Python 3.7-3.10;
 - is wrapped in a [Docker container](https://hub.docker.com/r/neurodata/m2g);
 - has install instructions via a Dockerfile;
 - requires no non-standard hardware to run;
@@ -49,11 +49,11 @@ The **m2g** pipeline:
 
 # Installation
 
-Instructions can be found within our documentation: https://docs.neurodata.io/m2g/tutorials/install.html
+Instructions can be found within our documentation: https://docs.neurodata.io/m2g/install.html
 
 # Usage
 
-Instructions can be found within our documentation: https://docs.neurodata.io/m2g/tutorials/usage.html
+Instructions can be found within our [documentation](https://docs.neurodata.io/m2g/usage.html) and a demo can be found [here](https://docs.neurodata.io/m2g/usage.html#demo).
 
 # License
 
