@@ -15,6 +15,7 @@ Figures
    :maxdepth: 1
    :titlesonly:
 
+   data
    figure2
    figure3
    figure4
